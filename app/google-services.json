@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "660437627117",
+    "project_id": "acetrack-kh",
+    "storage_bucket": "acetrack-kh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:660437627117:android:a7e280bd0987ed4087dce4",
+        "android_client_info": {
+          "package_name": "net.efrei.hudayberdiyevkerim.acetrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "660437627117-o9j4bj7opimdndopidme585nckkdr21r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5f1otepMbH_2IMWXBpeFRc1TsvEYVgco"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "660437627117-o9j4bj7opimdndopidme585nckkdr21r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

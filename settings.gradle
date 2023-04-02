@@ -2,7 +2,7 @@ pluginManagement {
     repositories {
         google()
         mavenCentral()
-        gradlePluginPortal()
+        jcenter()
     }
 }
 dependencyResolutionManagement {
@@ -10,6 +10,8 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        gradlePluginPortal()
+        jcenter()
     }
 }
 rootProject.name = "AceTrack"
