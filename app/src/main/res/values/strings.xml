@@ -1,3 +1,71 @@
 <resources>
-    <string name="app_name">AceTrack</string>
+    <string name="app_name">Ace Track</string>
+    <string name="add_result">Add Result</string>
+    <string name="menu_cancel">Cancel</string>
+    <string name="menu_results">Results</string>
+    <string name="menu_members">Members</string>
+    <string name="menu_contact">Contact</string>
+    <string name="fill_in_all_fields">Please fill in all fields</string>
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last name</string>
+    <string name="hint_date_of_birth">D.O.B.</string>
+    <string name="select_member_image">Select member image</string>
+    <string name="button_add_image">Add profile picture</string>
+    <string name="change_member_image">Change member image</string>
+    <string name="contact_email">acetrackapp@gmail.com</string>
+    <string name="contact_phone">+33 188 289 000</string>
+    <string name="contact_location">EFREI Tennis Club, Villejuif, Val-de-Marne</string>
+    <string name="contact_title">Get in touch!</string>
+    <string name="update_result">Update result</string>
+    <string name="update_member">Update member</string>
+    <string name="select_a_member">Select member:</string>
+    <string name="add_result_players_label">Players:</string>
+    <string name="add_result_score_label">Score:</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="hint_emailAddress">Email</string>
+    <string name="nav_header_title">EFREI Tennis Club</string>
+    <string name="nav_header_subtitle">Your home of tennis</string>
+    <string name="nav_header_desc">Menu</string>
+    <string name="select_experience">Select experience:</string>
+    <string name="results_not_found">No results yet...</string>
+    <string name="member_edit_denied">You cannot edit another members details!</string>
+    <string name="member_delete_denied">You cannot delete another member!</string>
+    <string name="confirm_member_delete">Are you sure you want to delete this member?</string>
+    <string name="add_result_date_label">Date:</string>
+    <string name="change_date">Change date</string>
+    <string name="more">More</string>
+    <string name="content_description_more">View rules and instructions</string>
+    <string name="tennis_general_rules">A ball must land within bounds for play to continue; if a player hits the ball outside of bounds, this results in the loss of the point for them.
+        \nPlayers/teams cannot touch the net or posts or cross onto the opponent’s side.
+        \nPlayers/teams cannot carry the ball or catch it with the racquet.
+        \nPlayers cannot hit the ball twice.
+        \nPlayers must wait until the ball passes the net before they can return it.
+        \nA player that does not return a live ball before it bounces twice loses the point.
+        \nIf the ball hits or touches the players, that counts as a penalty.
+        \nIf the racquet leaves the hand or verbal abuse occurs, a penalty is given.
+        \nAny ball that bounces on the lines of boundary are considered good.
+        \nA serve must bounce first before the receiving player can return it.</string>
+    <string name="tennis_equipment">Racquet – A racquet is comprised of a handle, a frame, and strings that are bound in a crisscross weaving pattern. A racquet’s frame should not exceed 32 inches in length, with a handle no longer than 12.5 inches in width, and a surface no more than 15.5 inches in overall length or 11.5 inches in width. There can also be no objects or devices on the racquet except for ones that prevent vibration and wear and tear.
+        \nBall – A tennis ball is white or yellow in color for tournaments, with measurements of 2-1/2 to 2-5/8 inches in diameter and weighing anywhere from 2 to 2-1/16 ounces. The elasticity of the ball and the uniform outer surface are also determined by approved specifications.</string>
+    <string name="tennis_scoring">Points – Smallest unit of measurement. Points increment from Love(0)-15-30-40-game.
+        \nGames – Games consist of 4 points each, and is won when a player reaches 4 points with at least a 2 point advantage.
+        \nSets – A set consists of 6 games and is won by the player/team who reaches 6 games first with least a 2 point lead.
+        \nAdvantage Set – If a game score of 6-6 is reached and advantage set rules are used, a player/team can only win a set with a 2 game lead.
+        \nMatches – A match is usually played as best of 3 or best of 5 sets.
+        \nDeuce – Occurs if a score of 40-40 is reached. In order to win the game, a player/team must win 2 consecutive points in order to take the game. If a player wins one point, they have advantage, but if they lose the next point, the score returns to deuce.
+        \nTie-break game – If a game score of 6-6 is reached and tie-break set rules are used, players must play a tie-break game in order to decide who wins the set. In a tie-break game, a player/team must reach 7 points with a two point advantage to win. For the serving format of a tie-break game, player 1 serves for the first point, player 2 serves for the next two points, player 1 serves for the next two points after that, etc.</string>
+    <string name="game">Game</string>
+    <string name="match">Match</string>
+    <string name="set">Set</string>
+    <string name="point">Point</string>
+
+    <!-- START Firebase Resources -->
+    <string name="sign_out">Sign Out</string>
+    <string name="hint_password">Password</string>
+    <string name="auth_failed">Authentication failed</string>
+    <string name="menu_editResult">Edit result</string>
+
+    <!-- START Google Maps Resources -->
+    <string name="google_maps_key">sdab2788sd8s7ss</string>
 </resources>
