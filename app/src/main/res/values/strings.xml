@@ -23,7 +23,7 @@
     <string name="add_result_score_label">Score:</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
-    <string name="hint_emailAddress">Email</string>
+    <string name="hint_email_address">Email</string>
     <string name="nav_header_title">EFREI Tennis Club</string>
     <string name="nav_header_subtitle">Your home of tennis</string>
     <string name="nav_header_desc">Menu</string>

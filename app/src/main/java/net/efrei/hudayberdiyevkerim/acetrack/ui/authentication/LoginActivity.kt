@@ -17,14 +17,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import net.efrei.hudayberdiyevkerim.acetrack.R
+import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityLoginBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.ui.home.Home
 import timber.log.Timber
 
 class LoginActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var authenticationViewModel : AuthenticationViewModel
+    private lateinit var binding : ActivityLoginBinding
     lateinit var app: MainApp
     private lateinit var authentication: FirebaseAuth
     private lateinit var togglePasswordVisibilityButton: ImageButton
@@ -32,6 +35,20 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.toolbarAdd.title = title
+        setSupportActionBar(binding.toolbarAdd)
+
+        app = application as MainApp
+
+        binding.loginButton.setOnClickListener(this)
+        binding.togglePasswordVisibilityButton.setOnClickListener(this)
+
+        togglePasswordVisibilityButton = findViewById(R.id.togglePasswordVisibilityButton)
+        togglePasswordVisibilityButton.setImageResource(R.drawable.ic_eye)
 
         app = application as MainApp
 
@@ -47,7 +64,7 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
     public override fun onStart() {
         super.onStart()
 
-        authenticationViewModel = ViewModelProvider(this).get(AuthenticationViewModel::class.java)
+        authenticationViewModel = ViewModelProvider(this)[AuthenticationViewModel::class.java]
 
         authenticationViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
             if (firebaseUser != null)

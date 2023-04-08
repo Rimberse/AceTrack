@@ -22,11 +22,11 @@ class WelcomeActivity: AppCompatActivity() {
         setSupportActionBar(binding.topAppBar)
 
         binding.topAppBar.setNavigationOnClickListener {
-            Log.i("Top app bar navigation button","clicked")
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         binding.loginButton.setOnClickListener {
-            Log.i("Login button","clicked")
+            startActivity(Intent(this, LoginActivity::class.java))
         }
 
         binding.registerButton.setOnClickListener {
