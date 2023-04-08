@@ -9,16 +9,11 @@ import androidx.appcompat.app.AppCompatActivity
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityWelcomeBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
+import net.efrei.hudayberdiyevkerim.acetrack.ui.rules.RulesActivity
 
 class WelcomeActivity: AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var binding: ActivityWelcomeBinding
-
-    fun displayRules(item: MenuItem) {
-        val intent = Intent(this, WelcomeActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,5 +43,11 @@ class WelcomeActivity: AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
+    }
+
+    fun displayRules(item: MenuItem) {
+        val intent = Intent(this, RulesActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 }
