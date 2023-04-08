@@ -21,6 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:title="@string/app_name"
+            app:menu="@menu/bar_top_app"
             app:navigationIcon="@drawable/ic_login_24dp"
             app:titleCentered="true"
             app:subtitleCentered="true" />
