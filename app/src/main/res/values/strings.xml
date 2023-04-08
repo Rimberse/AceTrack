@@ -75,7 +75,7 @@
     <!-- START Firebase Resources -->
     <string name="sign_out">Sign Out</string>
     <string name="hint_password">Password</string>
-    <string name="auth_failed">Authentication failed</string>
+    <string name="authentication_failed">Authentication failed</string>
     <string name="menu_editResult">Edit result</string>
 
     <!-- START Google Maps Resources -->
