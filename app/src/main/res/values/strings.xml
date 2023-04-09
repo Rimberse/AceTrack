@@ -33,7 +33,7 @@
     <string name="member_delete_denied">You cannot delete another member!</string>
     <string name="confirm_member_delete">Are you sure you want to delete this member?</string>
     <string name="add_result_date_label">Date:</string>
-    <string name="change_date">Change date</string>
+    <string name="select_date">Select date</string>
 
     <!-- START Tennis Rules resources -->
     <string name="more">Rules and regulations</string>

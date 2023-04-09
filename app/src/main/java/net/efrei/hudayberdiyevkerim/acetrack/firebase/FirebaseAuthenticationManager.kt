@@ -17,12 +17,12 @@ class FirebaseAuthenticationManager(application: Application) {
         this.application = application
         firebaseAuth = FirebaseAuth.getInstance()
 
-        if (firebaseAuth!!.currentUser != null) {
-            Timber.i("Login Success: ${firebaseAuth!!.currentUser?.email}")
-            liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
-            loggedOut.postValue(false)
-            errorStatus.postValue(false)
-        }
+//        if (firebaseAuth!!.currentUser != null) {
+//            Timber.i("Login Success: ${firebaseAuth!!.currentUser?.email}")
+//            liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
+//            loggedOut.postValue(false)
+//            errorStatus.postValue(false)
+//        }
     }
 
     fun login(email: String?, password: String?) {
