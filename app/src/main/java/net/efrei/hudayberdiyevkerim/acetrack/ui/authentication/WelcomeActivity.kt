@@ -2,7 +2,6 @@ package net.efrei.hudayberdiyevkerim.acetrack.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +29,7 @@ class WelcomeActivity: AppCompatActivity() {
         }
 
         binding.registerButton.setOnClickListener {
-            Log.i("Register button","clicked")
+            startActivity(Intent(this, RegisterActivity::class.java))
         }
 
         app = application as MainApp
