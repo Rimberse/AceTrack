@@ -2,22 +2,16 @@ package net.efrei.hudayberdiyevkerim.acetrack.ui.authentication
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
-import android.text.method.HideReturnsTransformationMethod
-import android.text.method.PasswordTransformationMethod
+import android.text.TextWatcher
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.common.SignInButton
 import com.google.firebase.auth.FirebaseAuth
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityLoginBinding
@@ -25,13 +19,12 @@ import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.ui.home.Home
 import timber.log.Timber
 
+
 class LoginActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var authenticationViewModel : AuthenticationViewModel
     private lateinit var binding : ActivityLoginBinding
     lateinit var app: MainApp
     private lateinit var authentication: FirebaseAuth
-    private lateinit var togglePasswordVisibilityButton: ImageButton
-    private lateinit var startForResult : ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,18 +38,37 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
         app = application as MainApp
 
         binding.loginButton.setOnClickListener(this)
-        binding.togglePasswordVisibilityButton.setOnClickListener(this)
 
-        togglePasswordVisibilityButton = findViewById(R.id.togglePasswordVisibilityButton)
-        togglePasswordVisibilityButton.setImageResource(R.drawable.ic_eye)
+        // Clears error messages on input
+        binding.email.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
 
-        app = application as MainApp
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                binding.emailLayout.error = null;
+            }
+
+            override fun afterTextChanged(s: Editable?) { }
+        })
+
+        binding.password.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) { }
+
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                binding.passwordLayout.error = null;
+            }
+
+            override fun afterTextChanged(s: Editable?) { }
+        })
 
         authentication = FirebaseAuth.getInstance()
     }
 
     private fun logIn(email: String, password: String) {
         Timber.d( "Sign In: $email")
+
+        if (!validateInput()) {
+            return
+        }
 
         authenticationViewModel.login(email, password)
     }
@@ -94,9 +106,32 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun validateInput(): Boolean {
+        var valid = true
+        val email = binding.email.text.toString()
+
+        if (TextUtils.isEmpty(email)) {
+            binding.emailLayout.error = "Email is empty"
+            valid = false
+        } else {
+            binding.emailLayout.error = null
+        }
+
+        val password = binding.password.text.toString()
+
+        if (TextUtils.isEmpty(password)) {
+            binding.passwordLayout.error = "Password is empty"
+            valid = false
+        } else {
+            binding.passwordLayout.error = null
+        }
+
+        return valid
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
-
+            R.id.loginButton -> logIn(binding.email.text.toString(), binding.password.text.toString())
         }
     }
 }

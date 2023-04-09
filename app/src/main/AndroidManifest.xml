@@ -21,6 +21,11 @@
             android:value="@string/google_maps_key" />
 
         <activity
+            android:name=".ui.home.Home"
+            android:exported="true">
+        </activity>
+
+        <activity
             android:name=".ui.splash_screen.SplashScreenActivity"
             android:exported="true"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

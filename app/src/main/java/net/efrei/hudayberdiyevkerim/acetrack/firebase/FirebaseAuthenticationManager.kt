@@ -18,6 +18,7 @@ class FirebaseAuthenticationManager(application: Application) {
         firebaseAuth = FirebaseAuth.getInstance()
 
         if (firebaseAuth!!.currentUser != null) {
+            Timber.i("Login Success: ${firebaseAuth!!.currentUser?.email}")
             liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
             loggedOut.postValue(false)
             errorStatus.postValue(false)
@@ -28,6 +29,7 @@ class FirebaseAuthenticationManager(application: Application) {
         firebaseAuth!!.signInWithEmailAndPassword(email!!, password!!)
             .addOnCompleteListener(application!!.mainExecutor) { task ->
                 if (task.isSuccessful) {
+                    Timber.i("Login Success: ${firebaseAuth!!.currentUser?.email}")
                     liveFirebaseUser.postValue(firebaseAuth!!.currentUser)
                     errorStatus.postValue(false)
                 } else {
