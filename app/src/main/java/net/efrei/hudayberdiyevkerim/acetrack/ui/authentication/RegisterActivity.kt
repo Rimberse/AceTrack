@@ -16,17 +16,22 @@ import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityRegisterBinding
+import net.efrei.hudayberdiyevkerim.acetrack.helpers.displayImagePicker
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
+import net.efrei.hudayberdiyevkerim.acetrack.models.UserModel
 import timber.log.Timber
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityRegisterBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
-    lateinit var app: MainApp
+    private var user = UserModel()
+    private lateinit var app: MainApp
+    private var edit = false
     private lateinit var authentication: FirebaseAuth
-    var calendar: Calendar = Calendar.getInstance()
+    private var calendar: Calendar = Calendar.getInstance()
     private var userDateOfBirth: TextView? = null
     private var buttonSelectDate: Button? = null
 
@@ -39,6 +44,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         binding.toolbarAdd.title = title
         setSupportActionBar(binding.toolbarAdd)
 
+        registerImagePickerCallback()
         app = application as MainApp
 
         val selectExperienceString = getString(R.string.select_experience)
@@ -76,9 +82,29 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             ).show()
         }
 
+        if (intent.hasExtra("member_edit")) {
+            edit = true
+            user = intent.extras?.getParcelable("member_edit")!!
+            binding.firstName.setText(user.firstName)
+            binding.lastName.setText(user.lastName)
+            binding.email.setText(user.email)
+            binding.password.setText(user.password)
+            userDateOfBirth!!.text = user.dateOfBirth.toString()
+            binding.experienceSpinner.setSelection(experienceOptions.indexOf(user.experience))
+            binding.registerButton.setText(R.string.update_member)
+
+            Picasso.get()
+                .load(user.image)
+                .into(binding.memberImage)
+
+            if (user.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_member_image)
+            }
+        }
+
         experienceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                Log.i("Clicked on experience option", experienceOptions[position])
+                user.experience = experienceOptions[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
@@ -94,6 +120,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         val format = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(format, Locale.ENGLISH)
         userDateOfBirth!!.text = simpleDateFormat.format(calendar.time)
+        Log.i("LocalDate", LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate().toString());
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -114,20 +141,28 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         imageIntentLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult())
             { result ->
-                when (result.resultCode){
+                when(result.resultCode){
                     RESULT_OK -> {
                         if (result.data != null) {
-                            Timber.i("Got Result ${result.data!!.data}")
+                            Timber.i("Image loaded ${result.data!!.data}")
+                            user.image = result.data!!.data!!
+
+                            Picasso.get()
+                                .load(user.image)
+                                .into(binding.memberImage)
 
                             binding.chooseImage.setText(R.string.change_member_image)
                         }
                     }
+
                     RESULT_CANCELED -> { } else -> { }
                 }
             }
     }
 
     override fun onClick(v: View) {
-
+        when (v.id) {
+            R.id.chooseImage -> displayImagePicker(imageIntentLauncher)
+        }
     }
 }
