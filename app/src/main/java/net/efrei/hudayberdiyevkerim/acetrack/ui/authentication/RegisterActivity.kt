@@ -1,22 +1,29 @@
 package net.efrei.hudayberdiyevkerim.acetrack.ui.authentication
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
+import com.squareup.picasso.Picasso
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityRegisterBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
+import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
 
 class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityRegisterBinding
+    private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
     lateinit var app: MainApp
     private lateinit var authentication: FirebaseAuth
     var calendar: Calendar = Calendar.getInstance()
@@ -101,6 +108,23 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun registerImagePickerCallback() {
+        imageIntentLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult())
+            { result ->
+                when (result.resultCode){
+                    RESULT_OK -> {
+                        if (result.data != null) {
+                            Timber.i("Got Result ${result.data!!.data}")
+
+                            binding.chooseImage.setText(R.string.change_member_image)
+                        }
+                    }
+                    RESULT_CANCELED -> { } else -> { }
+                }
+            }
     }
 
     override fun onClick(v: View) {
