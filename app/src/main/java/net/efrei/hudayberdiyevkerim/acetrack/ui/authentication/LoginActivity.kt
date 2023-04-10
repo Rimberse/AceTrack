@@ -107,12 +107,12 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun validateInput(): Boolean {
-        var valid = true
+        var isValid = true
         val email = binding.email.text.toString()
 
         if (TextUtils.isEmpty(email)) {
             binding.emailLayout.error = "Email is empty"
-            valid = false
+            isValid = false
         } else {
             binding.emailLayout.error = null
         }
@@ -121,12 +121,12 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
 
         if (TextUtils.isEmpty(password)) {
             binding.passwordLayout.error = "Password is empty"
-            valid = false
+            isValid = false
         } else {
             binding.passwordLayout.error = null
         }
 
-        return valid
+        return isValid
     }
 
     override fun onClick(v: View) {
