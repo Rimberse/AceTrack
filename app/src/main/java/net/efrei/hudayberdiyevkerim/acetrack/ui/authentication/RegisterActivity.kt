@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -22,7 +21,7 @@ import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityRegisterBinding
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.displayImagePicker
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.models.UserModel
-import net.efrei.hudayberdiyevkerim.acetrack.ui.home.Home
+import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
@@ -224,7 +223,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             app.users.update(user.copy())
 
             Toast.makeText(baseContext, "User details updated", Toast.LENGTH_SHORT).show()
-            startActivity(Intent(this, Home::class.java))
+            startActivity(Intent(this, HomeActivity::class.java))
             setResult(RESULT_OK)
         } else {
             authentication.createUserWithEmailAndPassword(email, password)
@@ -235,7 +234,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
                         app.users.create(user.copy())
 
                         Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_SHORT).show()
-                        startActivity(Intent(this, Home::class.java))
+                        startActivity(Intent(this, HomeActivity::class.java))
                         setResult(RESULT_OK)
                     } else {
                         Timber.w( "Create user with email: failure - ${task.exception}")

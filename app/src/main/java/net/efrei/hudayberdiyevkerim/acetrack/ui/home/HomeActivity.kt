@@ -3,16 +3,27 @@ package net.efrei.hudayberdiyevkerim.acetrack.ui.home
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import net.efrei.hudayberdiyevkerim.acetrack.R
+import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityHomeBinding
 import net.efrei.hudayberdiyevkerim.acetrack.ui.authentication.LoggedInViewModel
 import net.efrei.hudayberdiyevkerim.acetrack.ui.authentication.WelcomeActivity
 
-class Home : AppCompatActivity() {
+class HomeActivity : AppCompatActivity() {
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var homeBinding : ActivityHomeBinding
     private lateinit var loggedInViewModel : LoggedInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        homeBinding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(homeBinding.root)
+        drawerLayout = homeBinding.drawerLayout
+
+        val navView = homeBinding.navView
     }
 
     public override fun onStart() {
