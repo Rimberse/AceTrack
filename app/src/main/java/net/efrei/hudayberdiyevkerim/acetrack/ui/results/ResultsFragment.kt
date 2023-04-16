@@ -6,12 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.adapters.ResultsListener
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentResultsBinding
+import net.efrei.hudayberdiyevkerim.acetrack.helpers.SwipeToDeleteCallback
+import net.efrei.hudayberdiyevkerim.acetrack.helpers.SwipeToEditCallback
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 
 class ResultsFragment : Fragment(), ResultsListener {
@@ -31,16 +36,56 @@ class ResultsFragment : Fragment(), ResultsListener {
         val root = fragmentBinding.root
         activity?.title = getString(R.string.menu_results)
 
-        val fab: FloatingActionButton = fragmentBinding.fab
+        val floatingActionButton: FloatingActionButton = fragmentBinding.floatingActionButton
 
-        fab.setOnClickListener {
+        floatingActionButton.setOnClickListener {
             val action = ResultsFragmentDirections.actionResultsFragmentToNewResultFragment()
             findNavController().navigate(action)
         }
 
-
+        setEditAndDeleteSwipeFunctions()
 
         return root
+    }
+
+    private fun setEditAndDeleteSwipeFunctions() {
+        val swipeDeleteHandler = object : SwipeToDeleteCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onResultDeleteSwiped(viewHolder.adapterPosition)
+            }
+        }
+
+        val swipeEditHandler = object : SwipeToEditCallback(requireContext()) {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                onResultEditSwiped(viewHolder.adapterPosition)
+            }
+        }
+
+        val itemTouchDeleteHelper = ItemTouchHelper(swipeDeleteHandler)
+        val itemTouchEditHelper = ItemTouchHelper(swipeEditHandler)
+        itemTouchDeleteHelper.attachToRecyclerView(fragmentBinding.recyclerView)
+        itemTouchEditHelper.attachToRecyclerView(fragmentBinding.recyclerView)
+    }
+
+    override fun onResultDeleteSwiped(resultPosition: Int) {
+        val builder = context?.let { AlertDialog.Builder(it) }
+
+        builder?.setMessage(R.string.swipe_delete_prompt)?.setCancelable(false)
+            ?.setPositiveButton(R.string.ok_btn) { _, _ ->
+                var targetResult = app.results.findAll().elementAt(resultPosition)
+                app.results.delete(targetResult)
+            }?.setNegativeButton(R.string.cancel_btn) { dialog, _ ->
+                fragmentBinding.recyclerView.adapter?.notifyDataSetChanged()
+                dialog.dismiss()
+            }
+
+        builder?.create()?.show()
+    }
+
+    override fun onResultEditSwiped(resultPosition: Int) {
+        var targetResult = app.results.findAll().elementAt(resultPosition)
+        val action = ResultsFragmentDirections.actionResultsFragmentToNewResultFragment(targetResult.id.toString())
+        findNavController().navigate(action)
     }
 
     companion object {
@@ -49,13 +94,5 @@ class ResultsFragment : Fragment(), ResultsListener {
             ResultsFragment().apply {
                 arguments = Bundle().apply {}
             }
-    }
-
-    override fun onResultEditSwiped(resultPosition: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun onResultDeleteSwiped(resultPosition: Int) {
-        TODO("Not yet implemented")
     }
 }
