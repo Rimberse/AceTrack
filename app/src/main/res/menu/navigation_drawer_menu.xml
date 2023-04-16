@@ -14,5 +14,10 @@
             android:icon="@drawable/ic_users"
             android:title="@string/menu_players" />
 
+        <item
+            android:id="@+id/contactFragment"
+            android:icon="@drawable/ic_phone_alt"
+            android:title="@string/menu_contact" />
+
     </group>
 </menu>
