@@ -10,6 +10,25 @@
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.results.ResultsFragment"
         android:label="@string/menu_results" >
 
+        <action
+            android:id="@+id/action_resultsFragment_to_playersFragment"
+            app:destination="@id/playersFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/playersFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.players.PlayersFragment"
+        android:label="@string/menu_players" >
+
+        <action
+            android:id="@+id/action_playersFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
     </fragment>
 
 </navigation>

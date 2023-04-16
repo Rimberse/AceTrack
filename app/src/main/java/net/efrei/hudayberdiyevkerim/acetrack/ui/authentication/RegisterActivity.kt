@@ -20,7 +20,7 @@ import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityRegisterBinding
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.displayImagePicker
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
-import net.efrei.hudayberdiyevkerim.acetrack.models.UserModel
+import net.efrei.hudayberdiyevkerim.acetrack.models.PlayerModel
 import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import timber.log.Timber
 import java.text.SimpleDateFormat
@@ -30,12 +30,12 @@ import java.util.*
 class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityRegisterBinding
     private lateinit var imageIntentLauncher : ActivityResultLauncher<Intent>
-    private var user = UserModel()
+    private var player = PlayerModel()
     private lateinit var app: MainApp
-    private var isEditingExistingUser = false
+    private var isEditingExistingPlayer = false
     private lateinit var authentication: FirebaseAuth
     private var calendar: Calendar = Calendar.getInstance()
-    private var userDateOfBirth: TextView? = null
+    private var playerDateOfBirth: TextView? = null
     private var buttonSelectDate: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,16 +62,16 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
 
         experienceSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                user.experience = experienceOptions[position]
+                player.experience = experienceOptions[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {}
         }
 
-        userDateOfBirth = binding.resultDate
+        playerDateOfBirth = binding.resultDate
         buttonSelectDate = binding.selectDateButton
 
-        userDateOfBirth!!.text = getString(R.string.date_of_birth_placeholder)
+        playerDateOfBirth!!.text = getString(R.string.date_of_birth_placeholder)
 
         // Date picker implemented with reference to https://www.tutorialkart.com/kotlin-android/android-datepicker-kotlin-example/
         val dateSetListener =
@@ -93,23 +93,23 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             ).show()
         }
 
-        if (intent.hasExtra("user_edit")) {
-            isEditingExistingUser = true
-            user = intent.extras?.getParcelable("user_edit")!!
-            binding.firstName.setText(user.firstName)
-            binding.lastName.setText(user.lastName)
-            binding.email.setText(user.email)
-            binding.password.setText(user.password)
-            userDateOfBirth!!.text = user.dateOfBirth.toString()
-            binding.experienceSpinner.setSelection(experienceOptions.indexOf(user.experience))
-            binding.registerButton.setText(R.string.update_member)
+        if (intent.hasExtra("player_edit")) {
+            isEditingExistingPlayer = true
+            player = intent.extras?.getParcelable("player_edit")!!
+            binding.firstName.setText(player.firstName)
+            binding.lastName.setText(player.lastName)
+            binding.email.setText(player.email)
+            binding.password.setText(player.password)
+            playerDateOfBirth!!.text = player.dateOfBirth.toString()
+            binding.experienceSpinner.setSelection(experienceOptions.indexOf(player.experience))
+            binding.registerButton.setText(R.string.update_player)
 
             Picasso.get()
-                .load(user.image)
-                .into(binding.memberImage)
+                .load(player.image)
+                .into(binding.playerImage)
 
-            if (user.image != Uri.EMPTY) {
-                binding.chooseImage.setText(R.string.change_member_image)
+            if (player.image != Uri.EMPTY) {
+                binding.chooseImage.setText(R.string.change_player_image)
             }
         }
 
@@ -161,10 +161,10 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun updateDateInView() {
-        userDateOfBirth!!.error = null
+        playerDateOfBirth!!.error = null
         val format = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(format, Locale.ENGLISH)
-        userDateOfBirth!!.text = simpleDateFormat.format(calendar.time)
+        playerDateOfBirth!!.text = simpleDateFormat.format(calendar.time)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -189,13 +189,13 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
                     RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Image loaded ${result.data!!.data}")
-                            user.image = result.data!!.data!!
+                            player.image = result.data!!.data!!
 
                             Picasso.get()
-                                .load(user.image)
-                                .into(binding.memberImage)
+                                .load(player.image)
+                                .into(binding.playerImage)
 
-                            binding.chooseImage.setText(R.string.change_member_image)
+                            binding.chooseImage.setText(R.string.change_player_image)
                         }
                     }
 
@@ -211,33 +211,33 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             return
         }
 
-        user.firstName = binding.firstName.text.toString()
-        user.lastName = binding.lastName.text.toString()
-        user.email = binding.email.text.toString()
-        user.password = binding.password.text.toString()
-        user.dateOfBirth = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
+        player.firstName = binding.firstName.text.toString()
+        player.lastName = binding.lastName.text.toString()
+        player.email = binding.email.text.toString()
+        player.password = binding.password.text.toString()
+        player.dateOfBirth = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
 
-        if (isEditingExistingUser) {
-            authentication.currentUser!!.updateEmail(user.email)
-            authentication.currentUser!!.updatePassword(user.password)
-            app.users.update(user.copy())
+        if (isEditingExistingPlayer) {
+            authentication.currentUser!!.updateEmail(player.email)
+            authentication.currentUser!!.updatePassword(player.password)
+            app.players.update(player.copy())
 
-            Toast.makeText(baseContext, "User details updated", Toast.LENGTH_SHORT).show()
+            Toast.makeText(baseContext, "Player details updated", Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, HomeActivity::class.java))
             setResult(RESULT_OK)
         } else {
             authentication.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        Timber.d( "Create user with email: success")
-                        user.uuid = authentication.currentUser!!.uid
-                        app.users.create(user.copy())
+                        Timber.d( "Create player with email: success")
+                        player.uuid = authentication.currentUser!!.uid
+                        app.players.create(player.copy())
 
                         Toast.makeText(baseContext, "Registration successful", Toast.LENGTH_SHORT).show()
                         startActivity(Intent(this, HomeActivity::class.java))
                         setResult(RESULT_OK)
                     } else {
-                        Timber.w( "Create user with email: failure - ${task.exception}")
+                        Timber.w( "Create player with email: failure - ${task.exception}")
                         Toast.makeText(baseContext, "Authentication failed", Toast.LENGTH_SHORT).show()
                         Toast.makeText(baseContext, task.exception!!.message, Toast.LENGTH_SHORT).show()
                     }
@@ -280,15 +280,15 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             binding.passwordLayout.error = null
         }
 
-        val dateOfBirth = userDateOfBirth!!.text.toString()
+        val dateOfBirth = playerDateOfBirth!!.text.toString()
         if (dateOfBirth === getString(R.string.date_of_birth_placeholder)) {
-            userDateOfBirth!!.error = "Required"
+            playerDateOfBirth!!.error = "Required"
             isValid = false
         } else {
-            userDateOfBirth!!.error = null
+            playerDateOfBirth!!.error = null
         }
 
-        if (user.experience === getString(R.string.select_experience)) {
+        if (player.experience === getString(R.string.select_experience)) {
             val errorText = binding.experienceSpinner.selectedView as TextView
             errorText.error = "Required"
             errorText.requestFocus()

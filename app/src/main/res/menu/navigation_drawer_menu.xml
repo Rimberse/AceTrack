@@ -9,5 +9,10 @@
             android:icon="@drawable/ic_poll_h"
             android:title="@string/menu_results" />
 
+        <item
+            android:id="@+id/playersFragment"
+            android:icon="@drawable/ic_users"
+            android:title="@string/menu_players" />
+
     </group>
 </menu>
