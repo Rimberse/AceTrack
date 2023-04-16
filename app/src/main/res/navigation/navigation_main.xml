@@ -2,7 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_navigation" >
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/resultsFragment">
 
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.results.ResultsFragment"
+        android:label="@string/menu_results" >
+
+    </fragment>
 
 </navigation>

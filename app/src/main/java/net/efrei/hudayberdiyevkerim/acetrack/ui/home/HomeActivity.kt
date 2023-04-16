@@ -8,9 +8,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.setupActionBarWithNavController
-import androidx.navigation.ui.setupWithNavController
+import androidx.navigation.ui.*
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.firebase.auth.FirebaseUser
 import com.squareup.picasso.Picasso
@@ -25,6 +23,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding : ActivityHomeBinding
     private lateinit var navHeaderBinding : NavigationHeaderBinding
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var loggedInViewModel : LoggedInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -37,11 +36,15 @@ class HomeActivity : AppCompatActivity() {
         val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-//        val navController = findNavController(R.id.nav_host_fragment)
-//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
-//
-//        val navView = homeBinding.navView
-//        navView.setupWithNavController(navController)
+        val navController = findNavController(R.id.nav_host_fragment)
+        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+
+        appBarConfiguration = AppBarConfiguration(setOf(
+            R.id.resultsFragment), drawerLayout)
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        val navView = homeBinding.navView
+        navView.setupWithNavController(navController)
     }
 
     public override fun onStart() {
@@ -74,5 +77,10 @@ class HomeActivity : AppCompatActivity() {
                 .centerCrop()
                 .into(navHeaderBinding.navHeaderImage)
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 }
