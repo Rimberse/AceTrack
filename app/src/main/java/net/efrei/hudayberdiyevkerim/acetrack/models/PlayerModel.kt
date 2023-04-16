@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDate
 
 @Parcelize
-data class UserModel(
+data class PlayerModel(
     var id: Long = 0,
     var uuid: String = "",
     var email: String = "",

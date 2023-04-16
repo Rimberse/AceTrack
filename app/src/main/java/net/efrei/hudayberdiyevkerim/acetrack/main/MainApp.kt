@@ -1,16 +1,15 @@
 package net.efrei.hudayberdiyevkerim.acetrack.main
 
 import android.app.Application
-import net.efrei.hudayberdiyevkerim.acetrack.models.UserJSONStore
-import net.efrei.hudayberdiyevkerim.acetrack.models.UserModel
-import net.efrei.hudayberdiyevkerim.acetrack.models.UserStore
+import net.efrei.hudayberdiyevkerim.acetrack.models.PlayerJSONStore
+import net.efrei.hudayberdiyevkerim.acetrack.models.PlayerStore
 import timber.log.Timber
 
 class MainApp : Application() {
-    lateinit var users: UserStore
+    lateinit var players: PlayerStore
     override fun onCreate() {
         super.onCreate()
-        users = UserJSONStore(applicationContext)
+        players = PlayerJSONStore(applicationContext)
         Timber.plant(Timber.DebugTree())
         Timber.i("Ace Track app started")
     }

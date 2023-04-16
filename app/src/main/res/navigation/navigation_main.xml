@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/resultsFragment">
+
+    <fragment
+        android:id="@+id/resultsFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.results.ResultsFragment"
+        android:label="@string/menu_results" >
+
+        <action
+            android:id="@+id/action_resultsFragment_to_playersFragment"
+            app:destination="@id/playersFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_resultsFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_resultsFragment_to_newResultFragment"
+            app:destination="@id/newResultFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/playersFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.players.PlayersFragment"
+        android:label="@string/menu_players" >
+
+        <action
+            android:id="@+id/action_playersFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_playersFragment_to_contactFragment"
+            app:destination="@id/contactFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/contactFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.contact.ContactFragment"
+        android:label="@string/menu_contact" >
+
+        <action
+            android:id="@+id/action_contactFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <action
+            android:id="@+id/action_contactFragment_to_playersFragment"
+            app:destination="@id/playersFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/newResultFragment"
+        android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.new_result.NewResultFragment"
+        android:label="@string/add_result" >
+
+        <action
+            android:id="@+id/action_newResultFragment_to_resultsFragment"
+            app:destination="@id/resultsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+
+        <argument
+            android:name="result"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null" />
+
+    </fragment>
+
+</navigation>

@@ -36,7 +36,7 @@ class WelcomeActivity: AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.bar_top_app, menu)
+        menuInflater.inflate(R.menu.app_bar_top, menu)
         return true
     }
 

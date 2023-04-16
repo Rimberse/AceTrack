@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityLoginBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
-import net.efrei.hudayberdiyevkerim.acetrack.ui.home.Home
+import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import timber.log.Timber
 
 
@@ -80,7 +80,7 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
 
         authenticationViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
             if (firebaseUser != null)
-                startActivity(Intent(this, Home::class.java))
+                startActivity(Intent(this, HomeActivity::class.java))
         })
 
         authenticationViewModel.firebaseAuthenticationManager.errorStatus.observe(this, Observer { status -> checkStatus(status) })
