@@ -10,14 +10,21 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.appbar.MaterialToolbar
+import com.google.firebase.auth.FirebaseUser
+import com.squareup.picasso.Picasso
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityHomeBinding
+import net.efrei.hudayberdiyevkerim.acetrack.databinding.NavigationHeaderBinding
+import net.efrei.hudayberdiyevkerim.acetrack.helpers.customTransformation
 import net.efrei.hudayberdiyevkerim.acetrack.ui.authentication.LoggedInViewModel
 import net.efrei.hudayberdiyevkerim.acetrack.ui.authentication.WelcomeActivity
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var homeBinding : ActivityHomeBinding
+    private lateinit var navHeaderBinding : NavigationHeaderBinding
     private lateinit var loggedInViewModel : LoggedInViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,19 +34,23 @@ class HomeActivity : AppCompatActivity() {
         setContentView(homeBinding.root)
         drawerLayout = homeBinding.drawerLayout
 
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        val toolbar = findViewById<MaterialToolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        val navView = homeBinding.navView
+//        val navController = findNavController(R.id.nav_host_fragment)
+//        NavigationUI.setupActionBarWithNavController(this, navController, drawerLayout)
+//
+//        val navView = homeBinding.navView
+//        navView.setupWithNavController(navController)
     }
 
     public override fun onStart() {
         super.onStart()
 
-        loggedInViewModel = ViewModelProvider(this).get(LoggedInViewModel::class.java)
+        loggedInViewModel = ViewModelProvider(this)[LoggedInViewModel::class.java]
 
-        loggedInViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
-
+        loggedInViewModel.liveFirebaseUser.observe(this, Observer {
+            updateNavHeader(loggedInViewModel.liveFirebaseUser.value!!)
         })
 
         loggedInViewModel.loggedOut.observe(this, Observer { loggedOut ->
@@ -47,5 +58,21 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(Intent(this, WelcomeActivity::class.java))
             }
         })
+    }
+
+    private fun updateNavHeader(currentUser: FirebaseUser) {
+        var headerView = homeBinding.navView.getHeaderView(0)
+        navHeaderBinding = NavigationHeaderBinding.bind(headerView)
+        navHeaderBinding.navHeaderEmail.text = currentUser.email
+
+        if(currentUser.photoUrl != null && currentUser.displayName != null) {
+            navHeaderBinding.navHeaderName.text = currentUser.displayName
+
+            Picasso.get().load(currentUser.photoUrl)
+                .resize(200, 200)
+                .transform(customTransformation())
+                .centerCrop()
+                .into(navHeaderBinding.navHeaderImage)
+        }
     }
 }
