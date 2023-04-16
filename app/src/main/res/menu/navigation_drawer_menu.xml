@@ -19,5 +19,11 @@
             android:icon="@drawable/ic_phone_alt"
             android:title="@string/menu_contact" />
 
+        <item
+            android:id="@+id/logOut"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/log_out"
+            android:onClick="logOut"/>
+
     </group>
 </menu>
