@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="result"
+            type="net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:elevation="24dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/resultDate"
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:textSize="15sp"
+                android:padding="8dp"
+                android:gravity="center_vertical"
+                tools:text="@{result.date}"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="center_vertical">
+
+                <TextView
+                    android:id="@+id/resultPlayerOne"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    tools:text="@{result.playerOne}" />
+
+                <TextView
+                    android:id="@+id/resultPlayerTwo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    android:layout_gravity="center_vertical"
+                    tools:text="@{result.playerTwo}" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/resultPlayerOneScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    tools:text="@{Integer.toString(result.playerOneScore)}"
+                    android:padding="10dp"
+                    android:textAlignment="textEnd"/>
+
+                <TextView
+                    android:id="@+id/resultPlayerTwoScore"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:maxLines="1"
+                    android:padding="10dp"
+                    tools:text="@{Integer.toString(result.playerTwoScore)}"
+                    android:textAlignment="textEnd"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
