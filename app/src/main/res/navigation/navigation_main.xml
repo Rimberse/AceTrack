@@ -34,8 +34,8 @@
     <fragment
         android:id="@+id/playersFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.players.PlayersFragment"
-        android:label="@string/menu_players" >
-<!--        tools:layout="@layout/fragment_players" >-->
+        android:label="@string/menu_players"
+        tools:layout="@layout/fragment_players" >
 
         <action
             android:id="@+id/action_playersFragment_to_resultsFragment"

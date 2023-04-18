@@ -3,7 +3,9 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.util.*
 
 @Parcelize
 data class PlayerModel(

@@ -6,6 +6,8 @@
         <variable
             name="player"
             type="net.efrei.hudayberdiyevkerim.acetrack.models.PlayerModel" />
+
+        <import type="java.time.format.DateTimeFormatter" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -48,7 +50,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    tools:text="@{player.dateOfBirth.toString()}" />
+                    tools:text="@{player.dateOfBirth.format(DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;))}" />
+
 
                 <TextView
                     android:id="@+id/experience"
