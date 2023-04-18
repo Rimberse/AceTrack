@@ -71,7 +71,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         playerDateOfBirth = binding.resultDate
         buttonSelectDate = binding.selectDateButton
 
-        playerDateOfBirth!!.text = getString(R.string.date_of_birth_placeholder)
+        playerDateOfBirth!!.text = getString(R.string.date_placeholder)
 
         // Date picker implemented with reference to https://www.tutorialkart.com/kotlin-android/android-datepicker-kotlin-example/
         val dateSetListener =
@@ -281,7 +281,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         }
 
         val dateOfBirth = playerDateOfBirth!!.text.toString()
-        if (dateOfBirth === getString(R.string.date_of_birth_placeholder)) {
+        if (dateOfBirth === getString(R.string.date_placeholder)) {
             playerDateOfBirth!!.error = "Required"
             isValid = false
         } else {

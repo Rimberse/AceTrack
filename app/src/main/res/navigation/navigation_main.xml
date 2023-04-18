@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/resultsFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.results.ResultsFragment"
-        android:label="@string/menu_results" >
+        android:label="@string/menu_results"
+        tools:layout="@layout/fragment_results" >
 
         <action
             android:id="@+id/action_resultsFragment_to_playersFragment"
@@ -34,6 +35,7 @@
         android:id="@+id/playersFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.players.PlayersFragment"
         android:label="@string/menu_players" >
+<!--        tools:layout="@layout/fragment_players" >-->
 
         <action
             android:id="@+id/action_playersFragment_to_resultsFragment"
@@ -53,6 +55,7 @@
         android:id="@+id/contactFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.contact.ContactFragment"
         android:label="@string/menu_contact" >
+<!--        tools:layout="@layout/fragment_contact" >-->
 
         <action
             android:id="@+id/action_contactFragment_to_resultsFragment"
@@ -71,7 +74,8 @@
     <fragment
         android:id="@+id/newResultFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.new_result.NewResultFragment"
-        android:label="@string/add_result" >
+        android:label="@string/new_result"
+        tools:layout="@layout/fragment_new_result" >
 
         <action
             android:id="@+id/action_newResultFragment_to_resultsFragment"
