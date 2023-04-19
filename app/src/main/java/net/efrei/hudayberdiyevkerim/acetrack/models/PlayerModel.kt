@@ -15,7 +15,7 @@ data class PlayerModel(
     var password: String = "",
     var firstName: String = "",
     var lastName: String = "",
-    var dateOfBirth: LocalDate = LocalDate.now(),
+    var dateOfBirth: LocalDate = LocalDate.MIN,
     var experience: String = "",
     var image: Uri = Uri.EMPTY
 ) : Parcelable

@@ -17,6 +17,7 @@ import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentNewResultBindin
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
 import java.text.SimpleDateFormat
+import java.time.LocalDateTime
 import java.util.*
 
 class NewResultFragment : Fragment() {
@@ -25,7 +26,7 @@ class NewResultFragment : Fragment() {
     private val fragmentBinding get() = _fragmentBinding!!
     private var result = ResultModel()
     private var isEditingExistingResult = false
-    private var cal: Calendar = Calendar.getInstance()
+    private var calendar: Calendar = Calendar.getInstance()
     private var resultDate: TextView? = null
     private var buttonAddDate: Button? = null
 
@@ -67,9 +68,9 @@ class NewResultFragment : Fragment() {
         // Date picker implemented with reference to https://www.tutorialkart.com/kotlin-android/android-datepicker-kotlin-example/
         val dateSetListener =
             DatePickerDialog.OnDateSetListener { _, year, monthOfYear, dayOfMonth ->
-                cal.set(Calendar.YEAR, year)
-                cal.set(Calendar.MONTH, monthOfYear)
-                cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                calendar.set(Calendar.YEAR, year)
+                calendar.set(Calendar.MONTH, monthOfYear)
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth)
                 updateDateInView()
             }
 
@@ -77,9 +78,9 @@ class NewResultFragment : Fragment() {
             DatePickerDialog(
                 requireContext(),
                 dateSetListener,
-                cal.get(Calendar.YEAR),
-                cal.get(Calendar.MONTH),
-                cal.get(Calendar.DAY_OF_MONTH)
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH)
             ).show()
         }
 
@@ -91,7 +92,7 @@ class NewResultFragment : Fragment() {
             fragmentBinding.playerTwoSpinner.setSelection(playerNames.indexOf(result.playerTwo))
             fragmentBinding.playerOneScore.setText(result.playerOneScore.toString())
             fragmentBinding.playerTwoScore.setText(result.playerTwoScore.toString())
-            resultDate!!.text = result.date
+            resultDate!!.text = result.date.toString()
             fragmentBinding.addResultButton.setText(R.string.update_result)
         }
 
@@ -118,7 +119,7 @@ class NewResultFragment : Fragment() {
     private fun updateDateInView() {
         val format = "dd/MM/yyyy"
         val simpleDateFormat = SimpleDateFormat(format, Locale.ENGLISH)
-        resultDate!!.text = simpleDateFormat.format(cal.time)
+        resultDate!!.text = simpleDateFormat.format(calendar.time)
     }
 
     private fun setButtonListener(layout: FragmentNewResultBinding) {
@@ -139,7 +140,7 @@ class NewResultFragment : Fragment() {
             } else {
                 result.playerOneScore = playerOneScore.toInt()
                 result.playerTwoScore = playerTwoScore.toInt()
-                result.date = resultDate.toString()
+                result.date = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
 
                 if (isEditingExistingResult) {
                     app.results.update(result.copy())

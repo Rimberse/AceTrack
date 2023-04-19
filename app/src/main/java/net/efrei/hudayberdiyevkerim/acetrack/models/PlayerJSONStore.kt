@@ -9,10 +9,17 @@ import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
 import timber.log.Timber
 import java.lang.reflect.Type
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
+
 const val PLAYERS_JSON_FILE = "players.json"
-val playersGsonBuilder: Gson = GsonBuilder().setPrettyPrinting().registerTypeAdapter(Uri::class.java, PlayerUriParser()).create()
+
+val playersGsonBuilder: Gson = GsonBuilder()
+    .registerTypeAdapter(object : TypeToken<Uri?>() {}.type, PlayerUriParser())
+    .registerTypeAdapter(object : TypeToken<LocalDate?>() {}.type, LocalDateParser())
+    .setPrettyPrinting().create()
 val playersListType: Type = object : TypeToken<ArrayList<PlayerModel>>() {}.type
 
 class PlayerUriParser : JsonDeserializer<Uri>, JsonSerializer<Uri> {
@@ -30,6 +37,29 @@ class PlayerUriParser : JsonDeserializer<Uri>, JsonSerializer<Uri> {
         context: JsonSerializationContext?
     ): JsonElement {
         return JsonPrimitive(src.toString())
+    }
+}
+
+class LocalDateParser : JsonDeserializer<LocalDate>, JsonSerializer<LocalDate> {
+    @Throws(JsonParseException::class)
+    override fun deserialize(
+        json: JsonElement?,
+        typeOfT: Type?,
+        context: JsonDeserializationContext?
+    ): LocalDate? {
+        return LocalDate.parse(json?.asString, formatter.withLocale(Locale.ENGLISH))
+    }
+
+    override fun serialize(
+        localDate: LocalDate?,
+        srcType: Type?,
+        context: JsonSerializationContext
+    ): JsonElement {
+        return JsonPrimitive(formatter.format(localDate))
+    }
+
+    companion object {
+        private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     }
 }
 

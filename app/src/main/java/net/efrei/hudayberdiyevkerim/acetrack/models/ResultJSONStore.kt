@@ -9,10 +9,15 @@ import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
 import timber.log.Timber
 import java.lang.reflect.Type
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 const val RESULTS_JSON_FILE = "results.json"
-val resultsGsonBuilder: Gson = GsonBuilder().setPrettyPrinting().registerTypeAdapter(Uri::class.java, ResultUriParser()).create()
+val resultsGsonBuilder: Gson = GsonBuilder()
+    .registerTypeAdapter(object : TypeToken<Uri?>() {}.type, ResultUriParser())
+    .registerTypeAdapter(object : TypeToken<LocalDate?>() {}.type, LocalDateParser())
+    .setPrettyPrinting().create()
 val resultsListType: Type = object : TypeToken<ArrayList<ResultModel>>() {}.type
 
 class ResultUriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
