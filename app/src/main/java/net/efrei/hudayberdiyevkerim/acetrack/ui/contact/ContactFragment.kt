@@ -31,6 +31,7 @@ class ContactFragment : Fragment() {
         activity?.title = getString(R.string.menu_contact)
 
         val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment
+
         mapFragment?.getMapAsync { map ->
             map.mapType = GoogleMap.MAP_TYPE_NORMAL
 

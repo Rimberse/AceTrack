@@ -106,7 +106,8 @@
             android:layout_marginTop="30dp"
             map:uiZoomControls="true"
             map:uiRotateGestures="true"
-            map:cameraZoom="16" />
+            map:cameraZoom="16"
+            tools:ignore="Instantiatable" />
 
     </LinearLayout>
 
