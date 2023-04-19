@@ -19,7 +19,6 @@ import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import timber.log.Timber
 
-
 class LoginActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var authenticationViewModel : AuthenticationViewModel
     private lateinit var binding : ActivityLoginBinding
@@ -63,16 +62,6 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
         authentication = FirebaseAuth.getInstance()
     }
 
-    private fun logIn(email: String, password: String) {
-        Timber.d( "Sign In: $email")
-
-        if (!validateInput()) {
-            return
-        }
-
-        authenticationViewModel.login(email, password)
-    }
-
     public override fun onStart() {
         super.onStart()
 
@@ -84,6 +73,16 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
         })
 
         authenticationViewModel.firebaseAuthenticationManager.errorStatus.observe(this, Observer { status -> checkStatus(status) })
+    }
+
+    private fun logIn(email: String, password: String) {
+        Timber.d( "Sign In: $email")
+
+        if (!validateInput()) {
+            return
+        }
+
+        authenticationViewModel.login(email, password)
     }
 
     private fun checkStatus(error:Boolean) {

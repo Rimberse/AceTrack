@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityWelcomeBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
+import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import net.efrei.hudayberdiyevkerim.acetrack.ui.rules.RulesActivity
 
 class WelcomeActivity: AppCompatActivity() {
     lateinit var app: MainApp
     private lateinit var binding: ActivityWelcomeBinding
+    private lateinit var authenticationViewModel : AuthenticationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,13 +39,20 @@ class WelcomeActivity: AppCompatActivity() {
         app = application as MainApp
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        authenticationViewModel = ViewModelProvider(this)[AuthenticationViewModel::class.java]
+
+        authenticationViewModel.liveFirebaseUser.observe(this, Observer { firebaseUser ->
+            if (firebaseUser != null)
+                startActivity(Intent(this, HomeActivity::class.java))
+        })
+    }
+
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.app_bar_top, menu)
         return true
-    }
-
-    override fun onStart() {
-        super.onStart()
     }
 
     fun displayRules(item: MenuItem) {
