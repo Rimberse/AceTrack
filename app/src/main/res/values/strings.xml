@@ -84,6 +84,4 @@
     <string name="authentication_failed">Authentication failed</string>
     <string name="menu_editResult">Edit result</string>
 
-    <!-- START Google Maps Resources -->
-    <string name="google_maps_key">sdab2788sd8s7ss</string>
 </resources>

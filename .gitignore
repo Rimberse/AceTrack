@@ -18,6 +18,9 @@ out/
 #  Uncomment the following line in case you need and you don't have the release build type files in your app
 # release/
 
+# Environment file
+.env
+
 # Gradle files
 .gradle/
 build/
