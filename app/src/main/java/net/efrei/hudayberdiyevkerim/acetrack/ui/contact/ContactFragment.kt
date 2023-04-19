@@ -30,6 +30,21 @@ class ContactFragment : Fragment() {
         val root = fragmentBinding.root
         activity?.title = getString(R.string.menu_contact)
 
+        val mapFragment = childFragmentManager.findFragmentById(R.id.mapView) as? SupportMapFragment
+
+        mapFragment?.getMapAsync { map ->
+            map.mapType = GoogleMap.MAP_TYPE_NORMAL
+
+            val location = LatLng(48.78873349987668, 2.3637448505183554)
+
+            map.addMarker(MarkerOptions()
+                .position(location)
+                .title(getString(R.string.contact_location_title))
+            )
+
+            map.moveCamera(CameraUpdateFactory.newLatLng(location))
+        }
+
         return root
     }
 
