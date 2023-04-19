@@ -54,8 +54,8 @@
     <fragment
         android:id="@+id/contactFragment"
         android:name="net.efrei.hudayberdiyevkerim.acetrack.ui.contact.ContactFragment"
-        android:label="@string/menu_contact" >
-<!--        tools:layout="@layout/fragment_contact" >-->
+        android:label="@string/menu_contact"
+        tools:layout="@layout/fragment_contact" >
 
         <action
             android:id="@+id/action_contactFragment_to_resultsFragment"
