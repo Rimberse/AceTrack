@@ -2,7 +2,9 @@ package net.efrei.hudayberdiyevkerim.acetrack.ui.authentication
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
@@ -14,6 +16,9 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.ImageCapture
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.squareup.picasso.Picasso
 import net.efrei.hudayberdiyevkerim.acetrack.R
@@ -26,6 +31,13 @@ import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.util.*
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+import android.Manifest
+import android.widget.Toast
+import java.util.Locale
+
+typealias LumaListener = (luma: Double) -> Unit
 
 class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivityRegisterBinding
@@ -37,6 +49,8 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
     private var calendar: Calendar = Calendar.getInstance()
     private var playerDateOfBirth: TextView? = null
     private var buttonSelectDate: Button? = null
+    private var imageCapture: ImageCapture? = null
+    private lateinit var cameraExecutor: ExecutorService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -115,6 +129,17 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
 
         binding.registerButton.setOnClickListener(this)
         binding.chooseImage.setOnClickListener(this)
+
+        // Request camera permissions
+        if (allPermissionsGranted()) {
+            startCamera()
+        } else {
+            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS)
+        }
+
+        // Set up the listeners for take photo and video capture buttons
+        binding.imageCaptureButton.setOnClickListener { takePhoto() }
+        cameraExecutor = Executors.newSingleThreadExecutor()
 
         // Clears error messages on input
         binding.firstName.addTextChangedListener(object : TextWatcher {
@@ -303,5 +328,48 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             R.id.registerButton -> createAccount(binding.email.text.toString(), binding.password.text.toString())
             R.id.chooseImage -> displayImagePicker(imageIntentLauncher)
         }
+    }
+
+    /* CAMERA */
+    private fun takePhoto() {}
+
+    private fun startCamera() {}
+
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        if (requestCode == REQUEST_CODE_PERMISSIONS) {
+            if (allPermissionsGranted()) {
+                startCamera()
+            } else {
+                Toast.makeText(this,
+                    "Permissions not granted by the user.",
+                    Toast.LENGTH_SHORT).show()
+                finish()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cameraExecutor.shutdown()
+    }
+
+    companion object {
+        private const val TAG = "CameraXApp"
+        private const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss-SSS"
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        private val REQUIRED_PERMISSIONS =
+            mutableListOf (
+                Manifest.permission.CAMERA
+            ).apply {
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) {
+                    add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }.toTypedArray()
     }
 }
