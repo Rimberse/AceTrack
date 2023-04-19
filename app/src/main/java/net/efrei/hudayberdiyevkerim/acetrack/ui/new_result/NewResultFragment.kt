@@ -159,4 +159,9 @@ class NewResultFragment : Fragment() {
                 arguments = Bundle().apply { }
             }
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _fragmentBinding = null
+    }
 }
