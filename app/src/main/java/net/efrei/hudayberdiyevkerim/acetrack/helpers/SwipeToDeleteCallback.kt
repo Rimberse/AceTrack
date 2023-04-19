@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import net.efrei.hudayberdiyevkerim.acetrack.R
 
 // https://github.com/kitek/android-rv-swipe-delete
-
 abstract class SwipeToDeleteCallback(context: Context) : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
     private val deleteIcon = ContextCompat.getDrawable(context, R.drawable.ic_swipe_delete)
     private val intrinsicWidth = deleteIcon?.intrinsicWidth
