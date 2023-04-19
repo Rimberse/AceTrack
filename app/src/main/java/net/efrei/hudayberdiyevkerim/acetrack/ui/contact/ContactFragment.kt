@@ -34,12 +34,11 @@ class ContactFragment : Fragment() {
         mapFragment?.getMapAsync { map ->
             map.mapType = GoogleMap.MAP_TYPE_NORMAL
 
-            val location = LatLng(48.78890267276709, 2.36335347368545)
+            val location = LatLng(48.78873349987668, 2.3637448505183554)
 
-            map.addMarker(
-                MarkerOptions()
-                    .position(location)
-                    .title(getString(R.string.contact_location_title))
+            map.addMarker(MarkerOptions()
+                .position(location)
+                .title(getString(R.string.contact_location_title))
             )
 
             map.moveCamera(CameraUpdateFactory.newLatLng(location))

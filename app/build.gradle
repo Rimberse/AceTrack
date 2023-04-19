@@ -24,8 +24,6 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
-
-        manifestPlaceholders = [API_KEY: "$System.env.GOOGLE_API_KEY"]
     }
 
     buildTypes {
