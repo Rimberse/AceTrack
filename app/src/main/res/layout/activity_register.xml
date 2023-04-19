@@ -194,11 +194,6 @@
                 android:padding="8dp"
                 android:textSize="18dp" />
 
-            <androidx.camera.view.PreviewView
-                android:id="@+id/viewFinder"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/imageCaptureButton"
                 android:layout_width="match_parent"
@@ -209,6 +204,11 @@
                 android:elevation="2dp"
                 android:textSize="20sp"
                 android:text="@string/take_photo" />
+
+            <androidx.camera.view.PreviewView
+                android:id="@+id/viewFinder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chooseImage"
