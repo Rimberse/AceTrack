@@ -79,4 +79,40 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         // Recreate tables
         onCreate(db)
     }
+
+
+    // Insert a player into Player table
+    fun insertPlayer(player: PlayerModel): Long {
+        val db = writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_PLAYER_UUID, player.uuid)
+            put(COLUMN_PLAYER_EMAIL, player.email)
+            put(COLUMN_PLAYER_PASSWORD, player.password)
+            put(COLUMN_PLAYER_FIRST_NAME, player.firstName)
+            put(COLUMN_PLAYER_LAST_NAME, player.lastName)
+            put(COLUMN_PLAYER_DATE_OF_BIRTH, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(player.dateOfBirth))     // Convert LocalDate to String for storing in SQLite
+            put(COLUMN_PLAYER_EXPERIENCE, player.experience)
+            put(COLUMN_PLAYER_IMAGE, player.image.toString())   // Convert Uri to String for storing in SQLite
+        }
+
+        val id = db.insert(TABLE_NAME_PLAYER, null, contentValues)
+        db.close()
+        return id
+    }
+
+    // Insert a result into Result table
+    fun insertResult(result: ResultModel): Long {
+        val db = writableDatabase
+        val contentValues = ContentValues().apply {
+            put(COLUMN_RESULT_PLAYER_ONE, result.playerOne)
+            put(COLUMN_RESULT_PLAYER_TWO, result.playerTwo)
+            put(COLUMN_RESULT_PLAYER_ONE_SCORE, result.playerOneScore)
+            put(COLUMN_RESULT_PLAYER_TWO_SCORE, result.playerTwoScore)
+            put(COLUMN_RESULT_DATE, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(result.date))     // Convert LocalDate to String for storing in SQLite
+        }
+
+        val id = db.insert(TABLE_NAME_RESULT, null, contentValues)
+        db.close()
+        return id
+    }
 }
