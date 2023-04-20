@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.net.Uri
 import net.efrei.hudayberdiyevkerim.acetrack.models.PlayerModel
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
-import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
 
 class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION) {
+    private var db: SQLiteDatabase? = null
 
     companion object {
         private const val DATABASE_NAME = "ace_track.db"
@@ -42,7 +42,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         private const val COLUMN_RESULT_DATE = "date"
     }
 
-    override fun onCreate(db: SQLiteDatabase?) {
+    override fun onCreate(database: SQLiteDatabase?) {
+        db = database
+
         // Create Player table
         val createPlayerTableQuery = """
             CREATE TABLE IF NOT EXISTS $TABLE_NAME_PLAYER (
@@ -71,7 +73,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db?.execSQL(createResultTableQuery)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+    override fun onUpgrade(database: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
+        db = database
+
         // Drop tables if they exist
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME_PLAYER")
         db?.execSQL("DROP TABLE IF EXISTS $TABLE_NAME_RESULT")
@@ -84,6 +88,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     // Insert a player into Player table
     fun insertPlayer(player: PlayerModel): Long {
         val db = writableDatabase
+
         val contentValues = ContentValues().apply {
             put(COLUMN_PLAYER_UUID, player.uuid)
             put(COLUMN_PLAYER_EMAIL, player.email)
@@ -103,6 +108,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
     // Insert a result into Result table
     fun insertResult(result: ResultModel): Long {
         val db = writableDatabase
+
         val contentValues = ContentValues().apply {
             put(COLUMN_RESULT_PLAYER_ONE, result.playerOne)
             put(COLUMN_RESULT_PLAYER_TWO, result.playerTwo)
@@ -149,6 +155,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         val results = mutableListOf<ResultModel>()
         val db = readableDatabase
         val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME_RESULT", null)
+
         if (cursor.moveToFirst()) {
             do {
                 val result = ResultModel(
