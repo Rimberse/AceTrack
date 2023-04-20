@@ -115,4 +115,56 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
         db.close()
         return id
     }
+
+    // Retrieve all players from Player table
+    fun getAllPlayers(): List<PlayerModel> {
+        val players = mutableListOf<PlayerModel>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME_PLAYER", null)
+
+        if (cursor.moveToFirst()) {
+            do {
+                val player = PlayerModel(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_UUID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_EMAIL)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_PASSWORD)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_FIRST_NAME)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_LAST_NAME)),
+                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_DATE_OF_BIRTH)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH)),   // Convert String to LocalDate for retrieving from SQLite
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_EXPERIENCE)),
+                    Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_IMAGE)))
+                ) // Convert String to Uri for retrieving from SQLite
+                players.add(player)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return players
+    }
+
+    // Retrieve all results from Result table
+    fun getAllResults(): List<ResultModel> {
+        val results = mutableListOf<ResultModel>()
+        val db = readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM $TABLE_NAME_RESULT", null)
+        if (cursor.moveToFirst()) {
+            do {
+                val result = ResultModel(
+                    cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_RESULT_ID)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_ONE)),
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_TWO)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_ONE_SCORE)),
+                    cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_TWO_SCORE)),
+                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_DATE)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH)) // Convert String to LocalDate for retrieving from SQLite
+                )
+                results.add(result)
+            } while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+        return results
+    }
 }
