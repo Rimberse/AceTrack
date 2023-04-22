@@ -2,11 +2,13 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
+import net.efrei.hudayberdiyevkerim.acetrack.persistence.DBHelper
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.time.LocalDate
@@ -69,6 +71,7 @@ fun generateRandomPlayerId(): Long {
 
 class PlayerJSONStore(private val context: Context) : PlayerStore {
     private var players = mutableListOf<PlayerModel>()
+    private  val dbHelper = DBHelper(context)
 
     init {
         if (exists(context, PLAYERS_JSON_FILE)) {
@@ -79,12 +82,16 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
     override fun findAll(): MutableList<PlayerModel> {
         logAll()
         return players
+
+        Log.i("SQLite persisted Players table", dbHelper.getAllPlayers().joinToString("\n" ))
     }
 
     override fun create(player: PlayerModel) {
         player.id = generateRandomPlayerId()
         players.add(player)
         serialize()
+
+        dbHelper.insertPlayer(player)
     }
 
     override fun update(player: PlayerModel) {
@@ -95,6 +102,8 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
         }
 
         serialize()
+
+        dbHelper.insertPlayer(player)
     }
 
     override fun delete(player: PlayerModel) {

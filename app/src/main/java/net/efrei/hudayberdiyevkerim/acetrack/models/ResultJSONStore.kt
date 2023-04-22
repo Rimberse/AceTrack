@@ -2,11 +2,13 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
+import net.efrei.hudayberdiyevkerim.acetrack.persistence.DBHelper
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.time.LocalDate
@@ -44,6 +46,7 @@ fun generateRandomResultId(): Long {
 
 class ResultJSONStore(private val context: Context) : ResultStore {
     private var results = mutableListOf<ResultModel>()
+    private val dbHelper = DBHelper(context)
 
     init {
         if (exists(context, RESULTS_JSON_FILE)) {
@@ -62,12 +65,16 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     override fun findAll(): MutableList<ResultModel> {
         logAll()
         return results
+
+        Log.i("SQLite persisted Results table", dbHelper.getAllResults().joinToString("\n" ))
     }
 
     override fun create(result: ResultModel) {
         result.id = generateRandomResultId()
         results.add(result)
         serialize()
+
+        dbHelper.insertResult(result)
     }
 
     override fun update(result: ResultModel) {
@@ -78,6 +85,8 @@ class ResultJSONStore(private val context: Context) : ResultStore {
         }
 
         serialize()
+
+        dbHelper.insertResult(result)
     }
 
     override fun delete(result: ResultModel) {
