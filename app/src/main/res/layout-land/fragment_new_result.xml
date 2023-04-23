@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_weight="1"
+            android:weightSum="5"
             android:padding="8dp" >
 
             <TextView
@@ -25,6 +25,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/new_result_date_label"
                 android:textSize="18sp"
+                android:layout_weight="0.5"
                 android:layout_margin="5dp" />
 
             <TextView
@@ -32,27 +33,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
-                android:layout_weight="1"
+                android:layout_weight="1.75"
                 android:layout_margin="5dp" />
 
             <Button
                 android:id="@+id/addDateButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.75"
                 android:textColor="@color/colorPrimaryDark"
                 android:text="@string/change_date" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_weight="1"
-            android:padding="8dp" >
-
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_result_players_label"
                 android:textSize="18dp"
@@ -60,12 +53,12 @@
                 android:layout_margin="5dp" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/new_result_score_label"
                 android:textSize="18dp"
-                android:layout_weight="5"
                 android:maxLines="1"
+                android:layout_weight="1"
                 android:layout_margin="5dp" />
 
         </LinearLayout>
@@ -129,9 +122,10 @@
 
     <Button
         android:id="@+id/addResultButton"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
+        android:layout_gravity="end"
         android:background="@color/colorAccent"
         android:padding="8dp"
         android:stateListAnimator="@null"

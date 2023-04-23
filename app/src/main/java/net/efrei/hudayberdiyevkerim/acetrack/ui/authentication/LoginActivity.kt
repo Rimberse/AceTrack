@@ -32,7 +32,7 @@ class LoginActivity() : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         binding.toolbarAdd.title = title
-        setSupportActionBar(binding.toolbarAdd)
+//        setSupportActionBar(binding.toolbarAdd)
 
         app = application as MainApp
 

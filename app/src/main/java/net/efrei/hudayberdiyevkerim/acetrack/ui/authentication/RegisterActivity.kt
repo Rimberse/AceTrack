@@ -66,7 +66,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         binding.toolbarAdd.title = title
-        setSupportActionBar(binding.toolbarAdd)
+//        setSupportActionBar(binding.toolbarAdd)
 
         registerImagePickerCallback()
         app = application as MainApp
