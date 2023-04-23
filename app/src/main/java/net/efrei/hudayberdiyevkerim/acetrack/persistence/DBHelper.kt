@@ -8,6 +8,7 @@ import android.net.Uri
 import net.efrei.hudayberdiyevkerim.acetrack.models.PlayerModel
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
 import java.time.LocalDate
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -68,7 +69,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             $COLUMN_RESULT_PLAYER_TWO TEXT,
             $COLUMN_RESULT_PLAYER_ONE_SCORE INTEGER,
             $COLUMN_RESULT_PLAYER_TWO_SCORE INTEGER,
-            $COLUMN_RESULT_DATE TEXT)
+            $COLUMN_RESULT_DATE LONG)
         """.trimIndent()
         db?.execSQL(createResultTableQuery)
     }
@@ -114,7 +115,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             put(COLUMN_RESULT_PLAYER_TWO, result.playerTwo)
             put(COLUMN_RESULT_PLAYER_ONE_SCORE, result.playerOneScore)
             put(COLUMN_RESULT_PLAYER_TWO_SCORE, result.playerTwoScore)
-            put(COLUMN_RESULT_DATE, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(result.date))     // Convert LocalDate to String for storing in SQLite
+            put(COLUMN_RESULT_DATE, result.date)     // Convert LocalDate to String for storing in SQLite
         }
 
         val id = db.insert(TABLE_NAME_RESULT, null, contentValues)
@@ -164,7 +165,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_TWO)),
                     cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_ONE_SCORE)),
                     cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_RESULT_PLAYER_TWO_SCORE)),
-                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_DATE)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH)) // Convert String to LocalDate for retrieving from SQLite
+                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_RESULT_DATE)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH))
+                        .atStartOfDay(ZoneId.systemDefault()).toEpochSecond() // Convert String to LocalDate for retrieving from SQLite
                 )
                 results.add(result)
             } while (cursor.moveToNext())

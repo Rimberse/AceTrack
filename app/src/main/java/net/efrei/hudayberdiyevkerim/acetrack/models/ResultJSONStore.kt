@@ -1,51 +1,25 @@
 package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.content.Context
-import android.net.Uri
-import android.nfc.Tag
 import android.util.Log
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
-import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
 import net.efrei.hudayberdiyevkerim.acetrack.persistence.DBHelper
 import timber.log.Timber
 import java.lang.reflect.Type
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 const val RESULTS_JSON_FILE = "results.json"
 val resultsGsonBuilder: Gson = GsonBuilder()
-    .registerTypeAdapter(object : TypeToken<Uri?>() {}.type, ResultUriParser())
-    .registerTypeAdapter(object : TypeToken<LocalDate?>() {}.type, LocalDateParser())
     .setPrettyPrinting().create()
 val resultsListType: Type = object : TypeToken<ArrayList<ResultModel>>() {}.type
-
-class ResultUriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
-    override fun deserialize(
-        json: JsonElement?,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
-    ): Uri {
-        return Uri.parse(json?.asString)
-    }
-
-    override fun serialize(
-        src: Uri?,
-        typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement {
-        return JsonPrimitive(src.toString())
-    }
-}
 
 fun generateRandomResultId(): Long {
     return Random().nextLong()
@@ -53,10 +27,12 @@ fun generateRandomResultId(): Long {
 
 class ResultJSONStore(private val context: Context) : ResultStore {
     private var results = mutableListOf<ResultModel>()
-    private val database = Firebase.database("https://acetrack-kh-default-rtdb.europe-west1.firebasedatabase.app")
+    private lateinit var database: DatabaseReference
     private val dbHelper = DBHelper(context)
 
     init {
+        database = Firebase.database(context.getString(R.string.firebase_database_url)).reference
+
         if (exists(context, RESULTS_JSON_FILE)) {
             deserialize()
         }
@@ -80,6 +56,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     override fun create(result: ResultModel) {
         result.id = generateRandomResultId()
         results.add(result)
+        database.child(context.getString(R.string.results_reference)).child(result.id.toString()).setValue(result)
         serialize()
 
         dbHelper.insertResult(result)
@@ -90,6 +67,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
         if (currentResult != null) {
             results[results.indexOf(currentResult)] = result
+            database.child(context.getString(R.string.results_reference)).child(result.id.toString()).setValue(result)
         }
 
         serialize()
@@ -99,29 +77,13 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
     override fun delete(result: ResultModel) {
         results.remove(result)
+        database.child(context.getString(R.string.results_reference)).child(result.id.toString()).removeValue()
         serialize()
     }
 
     private fun serialize() {
         val jsonString = resultsGsonBuilder.toJson(results, resultsListType)
         write(context, RESULTS_JSON_FILE, jsonString)
-
-        val database = Firebase.database
-        val resultsRef = database.getReference("results")
-        resultsRef.setValue(jsonString)
-
-        resultsRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                // This method is called once with the initial value and again whenever data at this location is updated.
-                val value = dataSnapshot.getValue<String>()
-                Log.d("Results", "Value is: $value")
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-                Log.w("Results", "Failed to read value.", error.toException())
-            }
-        })
     }
 
     private fun deserialize() {
