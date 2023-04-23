@@ -2,7 +2,14 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.content.Context
 import android.net.Uri
+import android.nfc.Tag
 import android.util.Log
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
+import com.google.firebase.ktx.Firebase
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
@@ -46,6 +53,7 @@ fun generateRandomResultId(): Long {
 
 class ResultJSONStore(private val context: Context) : ResultStore {
     private var results = mutableListOf<ResultModel>()
+    private val database = Firebase.database("https://acetrack-kh-default-rtdb.europe-west1.firebasedatabase.app")
     private val dbHelper = DBHelper(context)
 
     init {
@@ -97,6 +105,23 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     private fun serialize() {
         val jsonString = resultsGsonBuilder.toJson(results, resultsListType)
         write(context, RESULTS_JSON_FILE, jsonString)
+
+        val database = Firebase.database
+        val resultsRef = database.getReference("results")
+        resultsRef.setValue(jsonString)
+
+        resultsRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                // This method is called once with the initial value and again whenever data at this location is updated.
+                val value = dataSnapshot.getValue<String>()
+                Log.d("Results", "Value is: $value")
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Failed to read value
+                Log.w("Results", "Failed to read value.", error.toException())
+            }
+        })
     }
 
     private fun deserialize() {
