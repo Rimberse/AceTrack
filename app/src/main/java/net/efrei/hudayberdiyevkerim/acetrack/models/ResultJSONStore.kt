@@ -58,7 +58,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     override fun create(result: ResultModel) {
         result.id = generateRandomResultId()
         results.add(result)
-        database.child(context.getString(R.string.results_reference)).child(result.id.toString()).setValue(result)
+        database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).setValue(result)
         serialize()
 
         dbHelper.insertResult(result)
@@ -69,7 +69,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
         if (currentResult != null) {
             results[results.indexOf(currentResult)] = result
-            database.child(context.getString(R.string.results_reference)).child(result.id.toString()).setValue(result)
+            database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).setValue(result)
         }
 
         serialize()
@@ -79,7 +79,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
     override fun delete(result: ResultModel) {
         results.remove(result)
-        database.child(context.getString(R.string.results_reference)).child(result.id.toString()).removeValue()
+        database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).removeValue()
         serialize()
     }
 
@@ -93,7 +93,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 //        val jsonString = read(context, RESULTS_JSON_FILE)
 //        results = resultsGsonBuilder.fromJson(jsonString, resultsListType)
 
-        database.child(context.getString(R.string.results_reference)).get().addOnSuccessListener {
+        database.child(context.getString(R.string.firebase_database_results_reference)).get().addOnSuccessListener {
             val resultsMap = HashMap<String, ResultModel>()
 
             for (resultSnapshot in it.children) {
