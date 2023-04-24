@@ -42,6 +42,7 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import java.time.ZoneId
 import java.util.Locale
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -248,6 +249,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         player.email = binding.email.text.toString()
         player.password = binding.password.text.toString()
         player.dateOfBirth = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
+            .atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
 
         if (isEditingExistingPlayer) {
             authentication.currentUser!!.updateEmail(player.email)

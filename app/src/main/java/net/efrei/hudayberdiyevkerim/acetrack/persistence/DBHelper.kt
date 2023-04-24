@@ -55,7 +55,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             $COLUMN_PLAYER_PASSWORD TEXT,
             $COLUMN_PLAYER_FIRST_NAME TEXT,
             $COLUMN_PLAYER_LAST_NAME TEXT,
-            $COLUMN_PLAYER_DATE_OF_BIRTH TEXT,
+            $COLUMN_PLAYER_DATE_OF_BIRTH LONG,
             $COLUMN_PLAYER_EXPERIENCE TEXT,
             $COLUMN_PLAYER_IMAGE TEXT)
         """.trimIndent()
@@ -96,7 +96,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
             put(COLUMN_PLAYER_PASSWORD, player.password)
             put(COLUMN_PLAYER_FIRST_NAME, player.firstName)
             put(COLUMN_PLAYER_LAST_NAME, player.lastName)
-            put(COLUMN_PLAYER_DATE_OF_BIRTH, DateTimeFormatter.ofPattern("dd/MM/yyyy").format(player.dateOfBirth))     // Convert LocalDate to String for storing in SQLite
+            put(COLUMN_PLAYER_DATE_OF_BIRTH, player.dateOfBirth)     // Convert LocalDate to String for storing in SQLite
             put(COLUMN_PLAYER_EXPERIENCE, player.experience)
             put(COLUMN_PLAYER_IMAGE, player.image.toString())   // Convert Uri to String for storing in SQLite
         }
@@ -138,7 +138,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_PASSWORD)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_FIRST_NAME)),
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_LAST_NAME)),
-                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_DATE_OF_BIRTH)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH)),   // Convert String to LocalDate for retrieving from SQLite
+                    LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_DATE_OF_BIRTH)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH))
+                        .atStartOfDay(ZoneId.systemDefault()).toEpochSecond(),   // Convert String to LocalDate for retrieving from SQLite
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_EXPERIENCE)),
                     Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_IMAGE)))
                 ) // Convert String to Uri for retrieving from SQLite

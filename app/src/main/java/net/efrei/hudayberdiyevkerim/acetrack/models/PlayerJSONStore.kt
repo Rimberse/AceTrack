@@ -18,6 +18,7 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 const val PLAYERS_JSON_FILE = "players.json"
@@ -126,6 +127,7 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
     }
 
     private fun deserialize() {
+        // In case if Firebase database went down
         val jsonString = read(context, PLAYERS_JSON_FILE)
         players = playersGsonBuilder.fromJson(jsonString, playersListType)
     }

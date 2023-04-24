@@ -3,9 +3,6 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 import android.net.Uri
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.util.*
 
 @Parcelize
 data class PlayerModel(
@@ -15,7 +12,7 @@ data class PlayerModel(
     var password: String = "",
     var firstName: String = "",
     var lastName: String = "",
-    var dateOfBirth: LocalDate = LocalDate.MIN,
+    var dateOfBirth: Long = 0,
     var experience: String = "",
     var image: Uri = Uri.EMPTY
 ) : Parcelable

@@ -2,7 +2,6 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 
 @Parcelize
 data class ResultModel(
