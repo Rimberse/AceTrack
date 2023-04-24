@@ -34,10 +34,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
     init {
         database = Firebase.database(context.getString(R.string.firebase_database_url)).reference
-
-        if (exists(context, RESULTS_JSON_FILE)) {
-            deserialize()
-        }
+        deserialize()
     }
 
     override fun findById(id: Long): ResultModel? {

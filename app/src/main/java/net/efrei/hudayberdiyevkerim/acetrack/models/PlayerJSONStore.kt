@@ -81,10 +81,7 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
 
     init {
         database = Firebase.database(context.getString(R.string.firebase_database_url)).reference
-
-        if (exists(context, PLAYERS_JSON_FILE)) {
-            deserialize()
-        }
+        deserialize()
     }
 
     override fun findAll(): MutableList<PlayerModel> {
@@ -128,8 +125,23 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
 
     private fun deserialize() {
         // In case if Firebase database went down
-        val jsonString = read(context, PLAYERS_JSON_FILE)
-        players = playersGsonBuilder.fromJson(jsonString, playersListType)
+//        val jsonString = read(context, PLAYERS_JSON_FILE)
+//        players = playersGsonBuilder.fromJson(jsonString, playersListType)
+
+        database.child(context.getString(R.string.firebase_database_players_reference)).get().addOnSuccessListener {
+            val playersMap = HashMap<String, PlayerModel>()
+
+            for (playerSnapshot in it.children) {
+                val player: PlayerModel? = playerSnapshot.getValue(PlayerModel::class.java)
+                playersMap[playerSnapshot.key!!] = player!!
+            }
+
+            Log.i("Firebase", "Got value $playersMap")
+            players = ArrayList<PlayerModel>(playersMap.values)
+
+        }.addOnFailureListener{
+            Log.e("Firebase", "Error getting data", it)
+        }
     }
 
     private fun logAll() {
