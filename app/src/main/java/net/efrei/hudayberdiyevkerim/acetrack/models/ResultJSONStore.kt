@@ -15,7 +15,9 @@ import net.efrei.hudayberdiyevkerim.acetrack.persistence.DBHelper
 import timber.log.Timber
 import java.lang.reflect.Type
 import java.util.*
+import kotlin.collections.*
 
+// Used as a backup service
 const val RESULTS_JSON_FILE = "results.json"
 val resultsGsonBuilder: Gson = GsonBuilder()
     .setPrettyPrinting().create()
@@ -87,8 +89,24 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     }
 
     private fun deserialize() {
-        val jsonString = read(context, RESULTS_JSON_FILE)
-        results = resultsGsonBuilder.fromJson(jsonString, resultsListType)
+        // In case if Firebase database went down
+//        val jsonString = read(context, RESULTS_JSON_FILE)
+//        results = resultsGsonBuilder.fromJson(jsonString, resultsListType)
+
+        database.child(context.getString(R.string.results_reference)).get().addOnSuccessListener {
+            val resultsMap = HashMap<String, ResultModel>()
+
+            for (resultSnapshot in it.children) {
+                val result: ResultModel? = resultSnapshot.getValue(ResultModel::class.java)
+                resultsMap[resultSnapshot.key!!] = result!!
+            }
+
+            Log.i("Firebase", "Got value $resultsMap")
+            results = ArrayList<ResultModel>(resultsMap.values)
+
+        }.addOnFailureListener{
+            Log.e("Firebase", "Error getting data", it)
+        }
     }
 
     private fun logAll() {
