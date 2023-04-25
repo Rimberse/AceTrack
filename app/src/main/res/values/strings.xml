@@ -88,5 +88,4 @@
     <string name="firebase_database">https://acetrack-kh-default-rtdb.europe-west1.firebasedatabase.app</string>
     <string name="firebase_database_results_reference">results</string>
     <string name="firebase_database_players_reference">players</string>
-
 </resources>
