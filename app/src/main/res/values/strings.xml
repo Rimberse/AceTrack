@@ -1,4 +1,14 @@
 <resources>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="language_array_title">Language</string>
+
+    <string-array name="language_array">
+        <item>@string/language_en</item>
+        <item>@string/language_fr</item>
+    </string-array>
+
     <string name="app_name">Ace Track</string>
     <string name="new_result">Add Result</string>
     <string name="menu_cancel">Cancel</string>

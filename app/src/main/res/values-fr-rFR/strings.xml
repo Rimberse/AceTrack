@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="language_array_title">Language</string>
+
     <string name="app_name">Ace Track</string>
     <string name="new_result">Ajouter un résultat</string>
     <string name="menu_cancel">Annuler</string>
