@@ -2,7 +2,6 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import java.time.LocalDate
 
 @Parcelize
 data class ResultModel(
@@ -11,5 +10,5 @@ data class ResultModel(
     var playerTwo: String = "",
     var playerOneScore: Int = 0,
     var playerTwoScore: Int = 0,
-    var date: LocalDate = LocalDate.MIN
+    var date: Long = 0
 ) : Parcelable

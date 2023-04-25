@@ -1,44 +1,27 @@
 package net.efrei.hudayberdiyevkerim.acetrack.models
 
 import android.content.Context
-import android.net.Uri
 import android.util.Log
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
 import net.efrei.hudayberdiyevkerim.acetrack.persistence.DBHelper
 import timber.log.Timber
 import java.lang.reflect.Type
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.*
 
+// Used as a backup service
 const val RESULTS_JSON_FILE = "results.json"
 val resultsGsonBuilder: Gson = GsonBuilder()
-    .registerTypeAdapter(object : TypeToken<Uri?>() {}.type, ResultUriParser())
-    .registerTypeAdapter(object : TypeToken<LocalDate?>() {}.type, LocalDateParser())
     .setPrettyPrinting().create()
 val resultsListType: Type = object : TypeToken<ArrayList<ResultModel>>() {}.type
-
-class ResultUriParser : JsonDeserializer<Uri>,JsonSerializer<Uri> {
-    override fun deserialize(
-        json: JsonElement?,
-        typeOfT: Type?,
-        context: JsonDeserializationContext?
-    ): Uri {
-        return Uri.parse(json?.asString)
-    }
-
-    override fun serialize(
-        src: Uri?,
-        typeOfSrc: Type?,
-        context: JsonSerializationContext?
-    ): JsonElement {
-        return JsonPrimitive(src.toString())
-    }
-}
 
 fun generateRandomResultId(): Long {
     return Random().nextLong()
@@ -46,12 +29,12 @@ fun generateRandomResultId(): Long {
 
 class ResultJSONStore(private val context: Context) : ResultStore {
     private var results = mutableListOf<ResultModel>()
+    private lateinit var database: DatabaseReference
     private val dbHelper = DBHelper(context)
 
     init {
-        if (exists(context, RESULTS_JSON_FILE)) {
-            deserialize()
-        }
+        database = Firebase.database(context.getString(R.string.firebase_database_url)).reference
+        deserialize()
     }
 
     override fun findById(id: Long): ResultModel? {
@@ -72,6 +55,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     override fun create(result: ResultModel) {
         result.id = generateRandomResultId()
         results.add(result)
+        database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).setValue(result)
         serialize()
 
         dbHelper.insertResult(result)
@@ -82,6 +66,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
         if (currentResult != null) {
             results[results.indexOf(currentResult)] = result
+            database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).setValue(result)
         }
 
         serialize()
@@ -91,6 +76,7 @@ class ResultJSONStore(private val context: Context) : ResultStore {
 
     override fun delete(result: ResultModel) {
         results.remove(result)
+        database.child(context.getString(R.string.firebase_database_results_reference)).child(result.id.toString()).removeValue()
         serialize()
     }
 
@@ -100,8 +86,24 @@ class ResultJSONStore(private val context: Context) : ResultStore {
     }
 
     private fun deserialize() {
-        val jsonString = read(context, RESULTS_JSON_FILE)
-        results = resultsGsonBuilder.fromJson(jsonString, resultsListType)
+        // In case if Firebase database went down
+//        val jsonString = read(context, RESULTS_JSON_FILE)
+//        results = resultsGsonBuilder.fromJson(jsonString, resultsListType)
+
+        database.child(context.getString(R.string.firebase_database_results_reference)).get().addOnSuccessListener {
+            val resultsMap = HashMap<String, ResultModel>()
+
+            for (resultSnapshot in it.children) {
+                val result: ResultModel? = resultSnapshot.getValue(ResultModel::class.java)
+                resultsMap[resultSnapshot.key!!] = result!!
+            }
+
+            Log.i("Firebase", "Got value $resultsMap")
+            results = ArrayList<ResultModel>(resultsMap.values)
+
+        }.addOnFailureListener{
+            Log.e("Firebase", "Error getting data", it)
+        }
     }
 
     private fun logAll() {

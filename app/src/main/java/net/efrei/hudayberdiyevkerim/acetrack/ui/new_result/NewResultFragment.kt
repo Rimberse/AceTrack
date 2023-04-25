@@ -17,7 +17,10 @@ import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentNewResultBindin
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
 import java.text.SimpleDateFormat
+import java.time.Instant
 import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class NewResultFragment : Fragment() {
@@ -92,7 +95,11 @@ class NewResultFragment : Fragment() {
             fragmentBinding.playerTwoSpinner.setSelection(playerNames.indexOf(result.playerTwo))
             fragmentBinding.playerOneScore.setText(result.playerOneScore.toString())
             fragmentBinding.playerTwoScore.setText(result.playerTwoScore.toString())
-            resultDate!!.text = result.date.toString()
+            val date = Instant.ofEpochSecond(result.date).atZone(ZoneId.systemDefault()).toLocalDate()
+            calendar.set(Calendar.YEAR, date.year)
+            calendar.set(Calendar.MONTH, date.monthValue - 1)
+            calendar.set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+            resultDate!!.text = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             fragmentBinding.addResultButton.setText(R.string.update_result)
         }
 
@@ -140,7 +147,7 @@ class NewResultFragment : Fragment() {
             } else {
                 result.playerOneScore = playerOneScore.toInt()
                 result.playerTwoScore = playerTwoScore.toInt()
-                result.date = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
+                result.date = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate().atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
 
                 if (isEditingExistingResult) {
                     app.results.update(result.copy())

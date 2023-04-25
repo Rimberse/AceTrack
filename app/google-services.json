@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "660437627117",
+    "firebase_url": "https://acetrack-kh-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "acetrack-kh",
     "storage_bucket": "acetrack-kh.appspot.com"
   },

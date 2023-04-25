@@ -42,6 +42,9 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
+import java.time.Instant
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 typealias LumaListener = (luma: Double) -> Unit
@@ -121,15 +124,20 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
             binding.lastName.setText(player.lastName)
             binding.email.setText(player.email)
             binding.password.setText(player.password)
-            playerDateOfBirth!!.text = player.dateOfBirth.toString()
+            val date = Instant.ofEpochSecond(player.dateOfBirth).atZone(ZoneId.systemDefault()).toLocalDate()
+            calendar.set(Calendar.YEAR, date.year)
+            calendar.set(Calendar.MONTH, date.monthValue - 1)
+            calendar.set(Calendar.DAY_OF_MONTH, date.dayOfMonth)
+            playerDateOfBirth!!.text = date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
             binding.experienceSpinner.setSelection(experienceOptions.indexOf(player.experience))
             binding.registerButton.setText(R.string.update_player)
 
-            Picasso.get()
-                .load(player.image)
-                .into(binding.playerImage)
+            if (player.image.isNotEmpty())
+                Picasso.get()
+                    .load(player.image)
+                    .into(binding.playerImage)
 
-            if (player.image != Uri.EMPTY) {
+            if (player.image.isNotEmpty()) {
                 binding.chooseImage.setText(R.string.change_player_image)
             }
         }
@@ -221,7 +229,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
                     RESULT_OK -> {
                         if (result.data != null) {
                             Timber.i("Image loaded ${result.data!!.data}")
-                            player.image = result.data!!.data!!
+                            player.image = result.data!!.data!!.toString()
 
                             Picasso.get()
                                 .load(player.image)
@@ -248,6 +256,7 @@ class RegisterActivity() : AppCompatActivity(), View.OnClickListener {
         player.email = binding.email.text.toString()
         player.password = binding.password.text.toString()
         player.dateOfBirth = LocalDateTime.ofInstant(calendar.toInstant(), calendar.timeZone.toZoneId()).toLocalDate()
+            .atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
 
         if (isEditingExistingPlayer) {
             authentication.currentUser!!.updateEmail(player.email)

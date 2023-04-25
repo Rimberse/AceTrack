@@ -8,6 +8,8 @@
             type="net.efrei.hudayberdiyevkerim.acetrack.models.PlayerModel" />
 
         <import type="java.time.format.DateTimeFormatter" />
+        <import type="java.time.Instant" />
+        <import type="java.time.ZoneId" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -50,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="14sp"
-                    tools:text="@{player.dateOfBirth.format(DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;))}" />
+                    tools:text="@{Instant.ofEpochSecond(player.dateOfBirth).atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;))}" />
 
 
                 <TextView

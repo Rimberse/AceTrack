@@ -9,6 +9,8 @@
             type="net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel" />
 
         <import type="java.time.format.DateTimeFormatter" />
+        <import type="java.time.Instant" />
+        <import type="java.time.ZoneId" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -32,7 +34,7 @@
                 android:textSize="15sp"
                 android:padding="8dp"
                 android:gravity="center_vertical"
-                tools:text="@{result.date.format(DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;))}"/>
+                tools:text="@{Instant.ofEpochSecond(result.date).atZone(ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern(&quot;dd/MM/yyyy&quot;))}" />
 
             <LinearLayout
                 android:layout_width="wrap_content"

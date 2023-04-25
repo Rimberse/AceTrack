@@ -3,8 +3,12 @@ package net.efrei.hudayberdiyevkerim.acetrack.models
 import android.content.Context
 import android.net.Uri
 import android.util.Log
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.exists
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.read
 import net.efrei.hudayberdiyevkerim.acetrack.helpers.write
@@ -14,6 +18,7 @@ import java.lang.reflect.Type
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.collections.ArrayList
 
 
 const val PLAYERS_JSON_FILE = "players.json"
@@ -71,12 +76,12 @@ fun generateRandomPlayerId(): Long {
 
 class PlayerJSONStore(private val context: Context) : PlayerStore {
     private var players = mutableListOf<PlayerModel>()
+    private lateinit var database: DatabaseReference
     private  val dbHelper = DBHelper(context)
 
     init {
-        if (exists(context, PLAYERS_JSON_FILE)) {
-            deserialize()
-        }
+        database = Firebase.database(context.getString(R.string.firebase_database_url)).reference
+        deserialize()
     }
 
     override fun findAll(): MutableList<PlayerModel> {
@@ -89,6 +94,7 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
     override fun create(player: PlayerModel) {
         player.id = generateRandomPlayerId()
         players.add(player)
+        database.child(context.getString(R.string.firebase_database_players_reference)).child(player.id.toString()).setValue(player)
         serialize()
 
         dbHelper.insertPlayer(player)
@@ -99,6 +105,7 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
 
         if (currentPlayer != null) {
             players[players.indexOf(currentPlayer)] = player
+            database.child(context.getString(R.string.firebase_database_players_reference)).child(player.id.toString()).setValue(player)
         }
 
         serialize()
@@ -108,6 +115,7 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
 
     override fun delete(player: PlayerModel) {
         players.remove(player)
+        database.child(context.getString(R.string.firebase_database_players_reference)).child(player.id.toString()).removeValue()
         serialize()
     }
     private fun serialize() {
@@ -116,8 +124,24 @@ class PlayerJSONStore(private val context: Context) : PlayerStore {
     }
 
     private fun deserialize() {
-        val jsonString = read(context, PLAYERS_JSON_FILE)
-        players = playersGsonBuilder.fromJson(jsonString, playersListType)
+        // In case if Firebase database went down
+//        val jsonString = read(context, PLAYERS_JSON_FILE)
+//        players = playersGsonBuilder.fromJson(jsonString, playersListType)
+
+        database.child(context.getString(R.string.firebase_database_players_reference)).get().addOnSuccessListener {
+            val playersMap = HashMap<String, PlayerModel>()
+
+            for (playerSnapshot in it.children) {
+                val player: PlayerModel? = playerSnapshot.getValue(PlayerModel::class.java)
+                playersMap[playerSnapshot.key!!] = player!!
+            }
+
+            Log.i("Firebase", "Got value $playersMap")
+            players = ArrayList<PlayerModel>(playersMap.values)
+
+        }.addOnFailureListener{
+            Log.e("Firebase", "Error getting data", it)
+        }
     }
 
     private fun logAll() {
