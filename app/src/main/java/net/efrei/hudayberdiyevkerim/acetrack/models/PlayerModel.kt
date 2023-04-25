@@ -14,5 +14,5 @@ data class PlayerModel(
     var lastName: String = "",
     var dateOfBirth: Long = 0,
     var experience: String = "",
-    var image: Uri = Uri.EMPTY
+    var image: String = ""
 ) : Parcelable

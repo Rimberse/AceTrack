@@ -141,7 +141,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME, null
                     LocalDate.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_DATE_OF_BIRTH)), DateTimeFormatter.ofPattern("dd/MM/yyyy").withLocale(Locale.ENGLISH))
                         .atStartOfDay(ZoneId.systemDefault()).toEpochSecond(),   // Convert String to LocalDate for retrieving from SQLite
                     cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_EXPERIENCE)),
-                    Uri.parse(cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_IMAGE)))
+                    cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_PLAYER_IMAGE))
                 ) // Convert String to Uri for retrieving from SQLite
                 players.add(player)
             } while (cursor.moveToNext())

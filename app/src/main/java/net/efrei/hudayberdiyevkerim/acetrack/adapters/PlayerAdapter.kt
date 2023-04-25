@@ -31,7 +31,8 @@ class PlayerAdapter constructor(private var players: List<PlayerModel>) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(player: PlayerModel) {
-            Picasso.get().load(player.image).resize(200,200).into(binding.imageIcon)
+            if (player.image.isNotEmpty())
+                Picasso.get().load(player.image).resize(200,200).into(binding.imageIcon)
 
             binding.player = player
             binding.executePendingBindings()
