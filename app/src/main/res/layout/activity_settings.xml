@@ -1,0 +1,63 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".ui.rules.RulesActivity" >
+
+    <LinearLayout
+        android:id="@+id/headerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentTop="true" >
+
+        <Button
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="15dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="Back"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_arrow_back_24dp"
+            android:backgroundTint="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/englishButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="15dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/language_en"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_arrow_back_24dp"
+            android:backgroundTint="@color/colorPrimary" />
+
+        <Button
+            android:id="@+id/frenchButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginTop="15dp"
+            android:layout_marginHorizontal="15dp"
+            android:gravity="center"
+            android:padding="15dp"
+            android:text="@string/language_fr"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:drawableLeft="@drawable/ic_arrow_back_24dp"
+            android:backgroundTint="@color/colorPrimary" />
+
+    </LinearLayout>
+
+</RelativeLayout>
