@@ -8,4 +8,13 @@
         android:visible="true"
         app:showAsAction="never"
         android:onClick="displayRules" />
+
+    <item
+        android:id="@+id/settings"
+        android:title="@string/settings"
+        android:contentDescription="@string/content_description_settings"
+        android:visible="true"
+        app:showAsAction="never"
+        android:onClick="displaySettings" />
+
 </menu>

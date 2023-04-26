@@ -12,6 +12,7 @@ import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityWelcomeBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.ui.home.HomeActivity
 import net.efrei.hudayberdiyevkerim.acetrack.ui.rules.RulesActivity
+import net.efrei.hudayberdiyevkerim.acetrack.ui.settings.SettingsActivity
 
 class WelcomeActivity: AppCompatActivity() {
     lateinit var app: MainApp
@@ -57,6 +58,12 @@ class WelcomeActivity: AppCompatActivity() {
 
     fun displayRules(item: MenuItem) {
         val intent = Intent(this, RulesActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
+    }
+
+    fun displaySettings(item: MenuItem) {
+        val intent = Intent(this, SettingsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
     }

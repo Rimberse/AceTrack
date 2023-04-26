@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="language_en">English</string>
+    <string name="language_fr">Français</string>
+
+    <string name="language_array_title">Language</string>
+
+    <string name="app_name">Ace Track</string>
+    <string name="new_result">Ajouter un résultat</string>
+    <string name="menu_cancel">Annuler</string>
+    <string name="menu_results">Résultats</string>
+    <string name="menu_players">Joueurs</string>
+    <string name="menu_contact">Contact</string>
+    <string name="fill_in_all_fields">Veuillez remplir tous les champs</string>
+    <string name="select_another_player">Les joueurs ne peuvent pas jouer contre eux-mêmes</string>
+    <string name="hint_first_name">Prénom</string>
+    <string name="hint_last_name">Nom de famille</string>
+    <string name="hint_date_of_birth">D.O.B.</string>
+    <string name="select_player_image">Sélectionner l\'image du joueur</string>
+    <string name="button_add_image">Ajouter une image de profil</string>
+    <string name="change_player_image">Changer l\'image du joueur</string>
+    <string name="contact_email">acetrackapp@gmail.com</string>
+    <string name="contact_phone">+33 188 289 000</string>
+    <string name="contact_location_title">EFREI Tennis Club</string>
+    <string name="contact_location">EFREI Tennis Club, Villejuif, France</string>
+    <string name="contact_title">Contactez-nous!</string>
+    <string name="update_result">Résultat de la mise à jour</string>
+    <string name="update_player">Mettre à jour le joueur</string>
+    <string name="select_a_player">Sélectionner le joueur:</string>
+    <string name="new_result_players_label">Joueurs:</string>
+    <string name="new_result_score_label">Score:</string>
+    <string name="login">S\'authentifier</string>
+    <string name="register">S\'inscrire</string>
+    <string name="hint_email_address">Email</string>
+    <string name="nav_header_title">EFREI Tennis Club</string>
+    <string name="nav_header_subtitle">Your home of tennis</string>
+    <string name="nav_header_desc">Menu</string>
+    <string name="select_experience">Sélectionner l\'expérience:</string>
+    <string name="results_not_found">Aucun résultat pour l\'instant...</string>
+    <string name="player_edit_denied">Vous ne pouvez pas modifier les détails d\'un autre joueur !</string>
+    <string name="player_delete_denied">Vous ne pouvez pas supprimer un autre joueur!</string>
+    <string name="confirm_player_delete">Etes-vous sûr de vouloir supprimer ce joueur ? </string>
+    <string name="new_result_date_label">Date:</string>
+    <string name="select_date">Sélectionner la date</string>
+    <string name="change_date">Changer la date</string>
+    <string name="date_placeholder">DD/MM/YYYY</string>
+    <string name="swipe_delete_prompt">Etes-vous sûr de vouloir supprimer ce résultat?</string>
+    <string name="ok_btn">Oui</string>
+    <string name="cancel_btn">Non</string>
+    <string name="take_photo">Prendre une photo</string>
+
+    <string name="more">Règles et règlements</string>
+    <string name="content_description_more">Voir les règles et les instructions</string>
+    <string name="settings">Réglages</string>
+    <string name="content_description_settings">Changer la langue de l\'application et plus</string>
+    <string name="tennis_rules_header">Règles du tennis</string>
+    <string name="tennis_rules_general"><b>Règles générales du tennis</b>\n\n
+        <li>Une balle doit atterrir dans les limites du terrain pour que le jeu se poursuive ; si un joueur frappe la balle en dehors des limites, il perd le point.</li>\n
+        <li>Les joueurs/équipes ne peuvent pas toucher le filet ou les poteaux, ni traverser du côté de l\'adversaire.</li>\n
+        <li>Les joueurs/équipes ne peuvent pas porter la balle ou l\'attraper avec la raquette.</li>\n
+        <li>Les joueurs ne peuvent pas frapper la balle deux fois.</li>\n
+        <li>Les joueurs doivent attendre que le ballon ait franchi le filet avant de pouvoir le renvoyer.</li>\n
+        <li>Un joueur qui ne renvoie pas une balle vivante avant qu\'elle ne rebondisse deux fois perd le point.</li>\n
+        <li>Si le ballon touche les joueurs, il y a pénalité.</li>\n
+        <li>Si la raquette quitte la main ou s\'il y a des insultes, une pénalité est infligée.</li>\n
+        <li>Toute balle qui rebondit sur les lignes de démarcation est considérée comme bonne.</li>\n
+        <li>Un service doit d\'abord rebondir avant que le joueur qui le reçoit puisse le renvoyer.</li>
+    </string>
+    <string name="tennis_rules_equipment"><b>Equipement</b>\n\n
+        <li><b>Raquette</b> – Une raquette est composée d\'un manche, d\'un cadre et de cordes qui sont liées par un motif de tissage croisé. Le cadre d\'une raquette ne doit pas dépasser 32 pouces de longueur, le manche ne doit pas dépasser 12,5 pouces de largeur et la surface ne doit pas dépasser 15,5 pouces de longueur totale ou 11,5 pouces de largeur. Il ne peut y avoir aucun objet ou dispositif sur la raquette, à l\'exception de ceux qui empêchent les vibrations et l\'usure.</li>\n
+        <li><b>Balle</b> – Une balle de tennis est de couleur blanche ou jaune pour les tournois, avec des dimensions de 2-1/2 à 2-5/8 pouces de diamètre et un poids de 2 à 2-1/16 onces. L\'élasticité de la balle et l\'uniformité de sa surface extérieure sont également déterminées par des spécifications approuvées.</li>
+    </string>
+    <string name="tennis_rules_scoring"><b>Notation</b>\n\n
+        <li><b>Points</b> – Plus petite unité de mesure. Les points s\'incrémentent de Love(0)-15-30-40-game.</li>\n
+        <li><b>Jeux</b> – Les parties se composent de 4 points chacune et sont remportées lorsqu\'un joueur atteint 4 points avec au moins 2 points d\'avance.</li>\n
+        <li><b>Set</b> – Un set se compose de 6 jeux et est remportée par le joueur/l\'équipe qui atteint 6 jeux en premier avec au moins 2 points d\'avance.</li>\n
+        <li><b>Set avantageux</b> – Si un score de 6-6 est atteint et que les règles du set avantageux sont utilisées, un joueur/une équipe ne peut gagner un set qu\'avec une avance de 2 jeux.</li>\n
+        <li><b>Matchs</b> – Un match se joue généralement au meilleur des 3 ou au meilleur des 5 sets.</li>\n
+        <li><b>Deuce</b> – Se produit si un score de 40-40 est atteint. Pour gagner la partie, un joueur/une équipe doit gagner 2 points consécutifs afin de remporter la partie. Si un joueur gagne un point, il a l\'avantage, mais s\'il perd le point suivant, le score revient à deux.</li>\n
+        <li><b>Jeu décisif</b> – Si un score de 6-6 est atteint et que les règles de jeu du tie-break sont utilisées, les joueurs doivent jouer un jeu de tie-break afin de déterminer qui gagne le set. Dans un jeu décisif, un joueur/une équipe doit atteindre 7 points avec un avantage de deux points pour gagner. Pour le format de service d\'un jeu décisif, le joueur 1 sert pour le premier point, le joueur 2 sert pour les deux points suivants, le joueur 1 sert pour les deux points suivants, etc.</li>
+    </string>
+    <string name="tennis_rules_source">
+        <b>Source:</b> <a href="http://protennistips.net/tennis-rules">http://protennistips.net/tennis-rules</a>
+    </string>
+    <string name="tennis_rules_game">Jeux</string>
+    <string name="tennis_rules_match">Match</string>
+    <string name="tennis_rules_set">Set</string>
+    <string name="tennis_rules_point">Point</string>
+
+    <!-- START Firebase Resources -->
+    <string name="log_out">Se déconnecter</string>
+    <string name="hint_password">Mot de passe</string>
+    <string name="authentication_failed">L\'authentification a échoué</string>
+    <string name="menu_editResult">Modifier le résultat</string>
+    <string name="firebase_database">https://acetrack-kh-default-rtdb.europe-west1.firebasedatabase.app</string>
+    <string name="firebase_database_results_reference">results</string>
+    <string name="firebase_database_players_reference">players</string>
+</resources>
