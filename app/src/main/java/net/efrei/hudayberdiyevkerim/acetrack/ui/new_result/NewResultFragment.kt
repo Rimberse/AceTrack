@@ -1,6 +1,11 @@
 package net.efrei.hudayberdiyevkerim.acetrack.ui.new_result
 
 import android.app.DatePickerDialog
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationRequest
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +14,17 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.OnMapReadyCallback
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.Marker
 import com.google.android.material.snackbar.Snackbar
+import android.Manifest
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentNewResultBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
@@ -23,7 +36,9 @@ import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class NewResultFragment : Fragment() {
+
+class NewResultFragment : Fragment(),
+    OnMapReadyCallback, LocationListener,GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     lateinit var app: MainApp
     private var _fragmentBinding: FragmentNewResultBinding? = null
     private val fragmentBinding get() = _fragmentBinding!!
@@ -33,10 +48,48 @@ class NewResultFragment : Fragment() {
     private var resultDate: TextView? = null
     private var buttonAddDate: Button? = null
 
+    private var mMap: GoogleMap? = null
+    private var mLastLocation: Location? = null
+    private var mCurrLocationMarker: Marker? = null
+    private var mGoogleApiClient: GoogleApiClient? = null
+    private var mLocationRequest: LocationRequest? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         setHasOptionsMenu(true)
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment : SupportMapFragment = parentFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(
+                    requireActivity(),
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                buildGoogleApiClient()
+                mMap!!.isMyLocationEnabled = true
+            }
+        } else {
+            buildGoogleApiClient()
+            mMap!!.isMyLocationEnabled = true
+        }
+    }
+
+    @Synchronized
+    private fun buildGoogleApiClient() {
+        mGoogleApiClient = GoogleApiClient.Builder(requireActivity())
+            .addConnectionCallbacks(this)
+            .addOnConnectionFailedListener(this)
+            .addApi(LocationServices.API).build()
+        mGoogleApiClient!!.connect()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
