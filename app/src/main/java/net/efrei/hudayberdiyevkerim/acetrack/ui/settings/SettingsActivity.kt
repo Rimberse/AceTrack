@@ -1,23 +1,40 @@
 package net.efrei.hudayberdiyevkerim.acetrack.ui.settings
 
+import android.R
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
+import android.view.View.OnClickListener
 import androidx.appcompat.app.AppCompatActivity
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivityRulesBinding
+import net.efrei.hudayberdiyevkerim.acetrack.databinding.ActivitySettingsBinding
+import net.efrei.hudayberdiyevkerim.acetrack.helpers.LocaleService
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.ui.authentication.WelcomeActivity
 
+
 class SettingsActivity : AppCompatActivity() {
     lateinit var app: MainApp
-    private lateinit var binding: ActivityRulesBinding
+    private lateinit var binding: ActivitySettingsBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityRulesBinding.inflate(layoutInflater)
+        binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.backButton.setOnClickListener {
             startActivity(Intent(this, WelcomeActivity::class.java))
+        }
+
+        binding.englishButton.setOnClickListener {
+            LocaleService.changeLanguage(this, "en")
+            recreate()
+        }
+
+        binding.frenchButton.setOnClickListener {
+            LocaleService.changeLanguage(this, "fr")
+            recreate()
         }
 
         app = application as MainApp

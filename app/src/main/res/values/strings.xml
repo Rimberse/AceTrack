@@ -56,6 +56,8 @@
     <!-- START Tennis Rules resources -->
     <string name="more">Rules and regulations</string>
     <string name="content_description_more">View rules and instructions</string>
+    <string name="settings">Settings</string>
+    <string name="content_description_settings">Change application language and more</string>
     <string name="tennis_rules_header">Tennis rules</string>
     <string name="tennis_rules_general"><b>General rules of tennis</b>\n\n
         <li>A ball must land within bounds for play to continue; if a player hits the ball outside of bounds, this results in the loss of the point for them.</li>\n
