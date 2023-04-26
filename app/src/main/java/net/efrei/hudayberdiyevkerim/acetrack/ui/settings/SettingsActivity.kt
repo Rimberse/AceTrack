@@ -21,18 +21,16 @@ class SettingsActivity : AppCompatActivity() {
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.backButton.setOnClickListener {
-            startActivity(Intent(this, WelcomeActivity::class.java))
-        }
-
         binding.englishButton.setOnClickListener(OnClickListener {
             LocaleService.setLocale(this, "en")
             recreate()
+            startActivity(Intent(this, WelcomeActivity::class.java))
         })
 
         binding.frenchButton.setOnClickListener(OnClickListener {
             LocaleService.setLocale(this, "fr")
             recreate()
+            startActivity(Intent(this, WelcomeActivity::class.java))
         })
 
         app = application as MainApp
