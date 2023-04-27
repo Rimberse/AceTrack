@@ -1,34 +1,39 @@
 package net.efrei.hudayberdiyevkerim.acetrack.ui.new_result
 
+import android.Manifest
 import android.app.DatePickerDialog
 import android.content.pm.PackageManager
+import android.location.Address
+import android.location.Geocoder
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationRequest
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.TextView
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.google.android.gms.common.ConnectionResult
 import com.google.android.gms.common.api.GoogleApiClient
+import com.google.android.gms.location.LocationListener
+import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
-import android.Manifest
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentNewResultBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.LocalDateTime
@@ -58,11 +63,6 @@ class NewResultFragment : Fragment(),
         super.onCreate(savedInstanceState)
         app = activity?.application as MainApp
         setHasOptionsMenu(true)
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment : SupportMapFragment = parentFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -92,9 +92,93 @@ class NewResultFragment : Fragment(),
         mGoogleApiClient!!.connect()
     }
 
+    override fun onConnected(bundle: Bundle?) {
+        mLocationRequest = LocationRequest()
+        mLocationRequest!!.setInterval(1000)
+        mLocationRequest!!.setFastestInterval(1000)
+        mLocationRequest!!.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY)
+
+        if (ContextCompat.checkSelfPermission(
+                requireActivity(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            LocationServices.FusedLocationApi.requestLocationUpdates(
+                mGoogleApiClient!!,
+                mLocationRequest!!,
+                this
+            )
+        }
+    }
+
+    override fun onConnectionSuspended(i: Int) {}
+
+    override fun onLocationChanged(location: Location) {
+        mLastLocation = location
+
+        if (mCurrLocationMarker != null) {
+            mCurrLocationMarker!!.remove()
+        }
+
+        // Place current location marker
+        val latLng = LatLng(location.latitude, location.longitude)
+        val markerOptions = MarkerOptions()
+        markerOptions.position(latLng)
+        markerOptions.title("Current Position")
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        mCurrLocationMarker = mMap!!.addMarker(markerOptions)
+
+        // move map camera
+        mMap!!.moveCamera(CameraUpdateFactory.newLatLng(latLng))
+        mMap!!.animateCamera(CameraUpdateFactory.zoomTo(11f))
+
+        // stop location updates
+        if (mGoogleApiClient != null) {
+            LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient!!, this)
+        }
+    }
+
+    override fun onConnectionFailed(p0: ConnectionResult) {}
+
+    private fun searchLocation() {
+        val locationSearch = fragmentBinding.editText as EditText
+        val location = locationSearch.text.toString()
+        var addressList: List<Address>? = null
+
+        if (location != null || location != "") {
+            val geocoder = Geocoder(requireActivity())
+
+            try {
+                addressList = geocoder.getFromLocationName(location, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            val address: Address = addressList!![0]
+            val latLng = LatLng(address.latitude, address.longitude)
+            mMap!!.addMarker(MarkerOptions().position(latLng).title(location))
+            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+            Toast.makeText(
+                requireContext(),
+                address.latitude.toString() + " " + address.longitude.toString(),
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _fragmentBinding = FragmentNewResultBinding.inflate(inflater, container, false)
         val root = fragmentBinding.root
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        val button = fragmentBinding.searchButton as Button
+        button.setOnClickListener {
+            searchLocation()
+        }
 
         if (arguments?.get("result") !== null) {
             isEditingExistingResult = true
