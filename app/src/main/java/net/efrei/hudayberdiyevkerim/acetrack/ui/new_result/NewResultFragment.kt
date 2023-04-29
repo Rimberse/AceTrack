@@ -41,6 +41,7 @@ import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.*
+import kotlin.math.sign
 
 
 class NewResultFragment : Fragment(),
@@ -86,8 +87,18 @@ class NewResultFragment : Fragment(),
 
         // Displays location for existing match result (if result is being modified)
         if (result.location != null) {
+            var addressList: List<Address>? = null
+            val geocoder = Geocoder(requireActivity())
+
+            try {
+                addressList = geocoder.getFromLocation(result.location!!.latitude, result.location!!.longitude, 1)
+            } catch (e: IOException) {
+                e.printStackTrace()
+            }
+
+            val address: Address = addressList!![0]
             val latLng = LatLng(result.location!!.latitude, result.location!!.longitude)
-            mMap!!.addMarker(MarkerOptions().position(latLng))
+            mMap!!.addMarker(MarkerOptions().position(latLng).title(address.getAddressLine(0)))
             mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         }
     }
