@@ -32,6 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import net.efrei.hudayberdiyevkerim.acetrack.R
 import net.efrei.hudayberdiyevkerim.acetrack.databinding.FragmentNewResultBinding
 import net.efrei.hudayberdiyevkerim.acetrack.main.MainApp
+import net.efrei.hudayberdiyevkerim.acetrack.models.LocationModel
 import net.efrei.hudayberdiyevkerim.acetrack.models.ResultModel
 import java.io.IOException
 import java.text.SimpleDateFormat
@@ -48,6 +49,7 @@ class NewResultFragment : Fragment(),
     private var _fragmentBinding: FragmentNewResultBinding? = null
     private val fragmentBinding get() = _fragmentBinding!!
     private var result = ResultModel()
+    private var matchLocation = LocationModel()
     private var isEditingExistingResult = false
     private var calendar: Calendar = Calendar.getInstance()
     private var resultDate: TextView? = null
@@ -158,6 +160,10 @@ class NewResultFragment : Fragment(),
             val latLng = LatLng(address.latitude, address.longitude)
             mMap!!.addMarker(MarkerOptions().position(latLng).title(location))
             mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+
+            matchLocation.latitude = address.latitude
+            matchLocation.longitude = address.longitude
+            result.location = matchLocation
 
             Toast.makeText(
                 requireContext(),
