@@ -52,6 +52,8 @@
     <string name="ok_btn">Yes</string>
     <string name="cancel_btn">No</string>
     <string name="take_photo">Take Photo</string>
+    <string name="google_maps_search_location">Search Location</string>
+    <string name="google_maps_search">Search</string>
 
     <!-- START Tennis Rules resources -->
     <string name="more">Rules and regulations</string>

@@ -10,5 +10,6 @@ data class ResultModel(
     var playerTwo: String = "",
     var playerOneScore: Int = 0,
     var playerTwoScore: Int = 0,
-    var date: Long = 0
+    var date: Long = 0,
+    var location : LocationModel? = null
 ) : Parcelable

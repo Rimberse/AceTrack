@@ -48,6 +48,8 @@
     <string name="ok_btn">Oui</string>
     <string name="cancel_btn">Non</string>
     <string name="take_photo">Prendre une photo</string>
+    <string name="google_maps_search_location">Rechercher un lieu</string>
+    <string name="google_maps_search">Rechercher</string>
 
     <string name="more">Règles et règlements</string>
     <string name="content_description_more">Voir les règles et les instructions</string>
