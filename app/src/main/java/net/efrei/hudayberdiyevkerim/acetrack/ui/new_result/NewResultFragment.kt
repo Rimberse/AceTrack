@@ -83,6 +83,13 @@ class NewResultFragment : Fragment(),
             buildGoogleApiClient()
             mMap!!.isMyLocationEnabled = true
         }
+
+        // Displays location for existing match result (if result is being modified)
+        if (result.location != null) {
+            val latLng = LatLng(result.location!!.latitude, result.location!!.longitude)
+            mMap!!.addMarker(MarkerOptions().position(latLng))
+            mMap!!.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+        }
     }
 
     @Synchronized
